@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<title>backend base</title>
+		<meta charset="UTF-8"meta/>
+	</head>
+	<body>
+		<div>
+		     <a href="/add_blog/"><input type="button">发表博客</input></a>
+		</div>
+		<div>
+			{% for blog in blogs %}
+				<a href="/add_blog/"<button type="button">修改</button></href>
+				{{ blog|truncate_words:"30"}}
+
+			{% endfor %}	
+			</div>
+	</body>
+
+</html>
