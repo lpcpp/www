@@ -6,12 +6,17 @@
 	</head>
 	<body>
 		<div>
-		     <a href="/add_blog/"><input type="button">发表博客</input></a>
+			<a href="/logout/"><input type="button">登出</input></a>
 		</div>
 		<div>
+		     <a href="/add_blog/"><input type="button">发表博客</input></a>
+		</div>
+                jjjjj
+		<div>
 			{% for blog in blogs %}
+                                hhhhhh
 				<a href="/add_blog/"<button type="button">修改</button></href>
-				{{ blog|truncate_words:"30"}}
+				{{ blog|truncatewords:30}}
 
 			{% endfor %}	
 			</div>

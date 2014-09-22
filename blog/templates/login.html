@@ -5,9 +5,13 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <form action='/backyard/' method="post">
-            <p>username: <input type="text" name="username"/></p>
-            <p>password: <input type="password" name="password"/></p>
+        <form action='' method="post">{% csrf_token %}
+            {% if errors %}
+                {% for error in errors %}
+                     {{ error }}
+                {% endfor %}
+            {% endif %}
+            {{ user.as_p }}
             <p><input type="submit" value="登录"/></p>
             <p><input type="reset" value="重置"/></p>
         </form>

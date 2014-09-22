@@ -30,12 +30,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -45,6 +47,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'www.urls'
@@ -58,7 +61,7 @@ WSGI_APPLICATION = 'www.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'blogdb'),
     }
 }
 
@@ -80,3 +83,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+TEMPLATE_DIRS = ('/Library/Python/2.7/site-packages/debug_toolbar/templates',
+                 '/Users/luopeng/project/www/blog/templates',
+)
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters':{
+        'standard':{
+            'format': '%(asctime)s[%(threadName)s:%(thread)d][%(name)s:%(lineno)d][%(levelname)s]-%(message)s'
+        },
+    },
+    'filters':{
+     },
+    'handlers':{
+         'default':{
+              'level': 'DEBUG',
+              'class': 'logging.StreamHandler',
+              'formatter': 'standard',
+          },
+    },
+    'loggers':{
+        'runlog':{
+            'handlers':['default',],
+            'propagate': False
+        },
+    },
+}
