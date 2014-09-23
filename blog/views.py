@@ -3,11 +3,27 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
-from models import Blog
+from models import Blog, Category
 from django.contrib.auth.decorators import login_required
 import logging
 
 logger = logging.getLogger('runlog')
+
+
+@login_required
+def add_category(request):
+    logger.debug('enter add category')
+    return render_to_response('add_category.html', context_instance=RequestContext(request))
+
+
+@login_required
+def add_category_success(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        description = request.POST['description']
+        c = Category(name=name, description=description)
+        c.save()
+    return render_to_response('add_category_success.html', context_instance=RequestContext(request))
 
 
 def add_blog(request):
@@ -15,10 +31,28 @@ def add_blog(request):
     logger.debug('1111' + str(request.user))
     if request.user.is_authenticated():
         logger.debug('add_blog: request.user.is_authenticated')
-        return render_to_response('add_blog.html', context_instance=RequestContext(request))
+        categorys = Category.objects.all()
+        logger.debug('categorys:%s', categorys)
+        return render_to_response('add_blog.html', {'categorys': categorys}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
+
+@login_required
+def add_blog_success(request):
+    logger.debug('enter success')
+    if request.method == "POST":
+        logger.debug('request.POST:' + str(request.POST))
+ 
+        caption = request.POST['caption']
+        content = request.POST['content']
+        category = request.POST['category']
+        logger.debug('category======%s', str(dir(category)))
+        c = Category.objects.get(name=category)
+        b = Blog(caption=caption, content=content, category=c)
+        b.save()
+
+    return render_to_response('add_blog_success.html', context_instance=RequestContext(request))
 
 
 def log_in(request):
@@ -65,15 +99,3 @@ def backyard(request):
 def index(request):
     blogs = Blog.objects.all()
     return render_to_response('index.html', {'blogs': blogs})
-
-
-
-@login_required
-def add_blog_success(request):
-    if request.method == "POST":
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            logger.debug('blog form' + str(form))
-            form.save()
-
-    return render_to_response('add_blog_success.html', context_instance=RequestContext(request))
