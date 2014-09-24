@@ -21,4 +21,10 @@ urlpatterns = patterns('',
 
     url(r'^add_category/$', add_category, name="add_category"),
     url(r'^add_category_success/$', add_category_success, name="add_category_success"),
+
+    url(r'^detail/(?P<id>\d+)/$', detail),
+    url(r'^about/$', about),
+
+    url(r'^del_blog/(?P<id>\d+)/$', del_blog),
+    url(r'^del_blog_success/$', del_blog_success),
 )

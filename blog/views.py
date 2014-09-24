@@ -99,3 +99,25 @@ def backyard(request):
 def index(request):
     blogs = Blog.objects.all()
     return render_to_response('index.html', {'blogs': blogs})
+
+
+def detail(request, id):
+    logger.debug('enter detail')
+    blog = Blog.objects.get(id=int(id))
+    logger.debug('blog tail====%s', blog)
+    return render_to_response('detail.html', {'blog': blog, 'request': request})
+
+
+def about(request):
+    return render_to_response('about.html')
+
+
+def del_blog(request, id):
+    logger.debug('enter del_blog')
+    Blog.objects.get(id=int(id)).delete()
+    return HttpResponseRedirect('/del_blog_success/')
+
+
+def del_blog_success(request):
+    logger.debug('enter del blog success')
+    return render_to_response('del_blog_success.html')

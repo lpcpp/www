@@ -9,13 +9,21 @@
 			<a href="/logout/"><input type="button">登出</input></a>
 		</div>
 		<div>
+			<a href="/add_category/"><input type="button">增加博文类型</input></a>
+		</div>
+		<div>
 		     <a href="/add_blog/"><input type="button">发表博客</input></a>
 		</div>
 		<div>
 			{% for blog in blogs %}
 				</p>
 				<a href="/add_blog/"<button type="button">修改</button></a>
-				{{ blog|truncatewords:30}}
+				<a href="/del_blog/{{ blog.id }}"<button type="button">删除</button></a>
+				<a href="/detail/{{blog.id}}/">{{ blog}}</a>
+				{{ blog.tm }}
+				</p>
+				<p>
+					{{ blog.content|truncatewords:30}}
 				</p>
 
 			{% endfor %}	
