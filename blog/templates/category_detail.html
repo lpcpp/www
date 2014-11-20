@@ -2,11 +2,10 @@
 
 {% block content %}
 	{% if request.user.is_authenticated %}
-		<a href="/del_blog/{{ blog.id }}/">删除</a>
+		<a href="/del_category/{{ category.id }}/"><input type="button">删除</input></a>
         <a href="/modify_blog/"<button type="button">修改</button></a>
 	{% endif %}
-	<p>{{ blog.caption }}</p>
-	<p>{{ blog.tm }}</p>
-	<p>{{ blog.category }}</p>
-	<p>{{ blog.content }}</p>
+	<p>{{ category.name }}</p>
+	<p>{{ category.tm }}</p>
+	<p>{{ category.description}}</p>
 {% endblock %}

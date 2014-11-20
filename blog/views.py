@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login, logout
 from models import Blog, Category
 from django.contrib.auth.decorators import login_required
 import logging
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
 
 logger = logging.getLogger('runlog')
 
@@ -36,6 +39,12 @@ def add_blog(request):
         return render_to_response('add_blog.html', {'categorys': categorys}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
+
+
+def modify_blog(request):
+    logger.debug('enter modify blog')
+
+
 
 
 @login_required
@@ -88,7 +97,17 @@ def backyard(request):
     logger.debug('enter backyard') 
     if request.user.is_authenticated():
         logger.debug('backyard user is authenticated') 
-        blogs = Blog.objects.all()
+        blogs = Blog.objects.all().order_by('-tm')
+        paginator = Paginator(blogs, 10)
+        page = request.GET.get('page')
+        logger.debug('paginator.num_pages:%s', paginator.num_pages)
+        try:
+            blogs = paginator.page(page)
+        except PageNotAnInteger:
+            blogs = paginator.page(1)
+        except EmptyPage:
+            blogs = paginator.page(paginator.num_pages)
+
         return render_to_response('backend.html', {'blogs': blogs}, context_instance=RequestContext(request))
     else:
         logger.debug('bakcyard user is not authenticated')
@@ -97,8 +116,17 @@ def backyard(request):
 
 
 def index(request):
-    blogs = Blog.objects.all()
-    return render_to_response('index.html', {'blogs': blogs})
+    blogs = Blog.objects.all().order_by('-tm')
+    paginator = Paginator(blogs, 5)
+    page = request.GET.get('page')
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
+    logger.debug('request.user=%s', request.user)
+    return render_to_response('index.html', {'blogs': blogs, 'request': request})
 
 
 def detail(request, id):
@@ -121,3 +149,24 @@ def del_blog(request, id):
 def del_blog_success(request):
     logger.debug('enter del blog success')
     return render_to_response('del_blog_success.html')
+
+
+def del_category(request, id):
+    logger.debug('enter del_category')
+    Category.objects.get(id=int(id)).delete()
+    return HttpResponseRedirect('/del_category_success/')
+
+
+def del_category_success(request):
+        logger.debug('enter del category success')
+        return render_to_response('del_blog_success.html')
+
+
+def category_list(request):
+    categorys = Category.objects.all().order_by('-tm')
+    return render_to_response('category_list.html', {'categorys': categorys, 'request': request})
+
+
+def category_detail(request, id):
+    category = Category.objects.get(id=int(id))
+    return render_to_response('category_detail.html', {'category': category, 'request': request})

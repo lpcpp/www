@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 	<head>
-		<title>backend base</title>
+		<title>{% block title %}backend base{% endblock %}</title>
 		<meta charset="UTF-8"meta/>
 	</head>
 	<body>
+        {% block head %}
+		<div>
+			<a href="/index/"><input type="button">首页</input></a>
+		</div>
 		<div>
 			<a href="/logout/"><input type="button">登出</input></a>
 		</div>
@@ -12,22 +16,43 @@
 			<a href="/add_category/"><input type="button">增加博文类型</input></a>
 		</div>
 		<div>
+		     <a href="/category_list/"><input type="button">博客类型列表</input></a>
+		</div>
+		<div>
 		     <a href="/add_blog/"><input type="button">发表博客</input></a>
 		</div>
+        {% endblock %}
+
+        {% block content %}
 		<div>
 			{% for blog in blogs %}
 				</p>
-				<a href="/add_blog/"<button type="button">修改</button></a>
-				<a href="/del_blog/{{ blog.id }}"<button type="button">删除</button></a>
+				<a href="/modify_blog/"<button type="button">修改</button></a>
+				<a href="/del_blog/{{ blog.id }}"<input type="button">删除</input></a>
 				<a href="/detail/{{blog.id}}/">{{ blog}}</a>
 				{{ blog.tm }}
 				</p>
 				<p>
-					{{ blog.content|truncatewords:30}}
+					{{ blog.content | slice:"300" }}
+					{# { blog.content | truncatewords:30 }} #}
 				</p>
 
 			{% endfor %}	
-			</div>
+     	</div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if blogs.has_previous %}
+                    <a href="?page={{ blogs.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+                </span>
+                {% if blogs.has_next %}
+                    <a href="?page={{ blogs.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endblock %}
 	</body>
 
 </html>

@@ -2,7 +2,20 @@
 {% block content %}
 	{% for blog in blogs %}
 		<p><a href="/detail/{{ blog.id }}">{{ blog.caption }}</a> &nbsp;&nbsp;{{ blog.tm }} {{ blog.category }}</p>
-		<p>{{ blog.content|truncatewords:30 }}
+		<p>{{ blog.content|slice:"300" }}
 	{% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if blogs.has_previous %}
+                <a href="?page={{ blogs.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+            </span>
+            {% if blogs.has_next %}
+                <a href="?page={{ blogs.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}
 
