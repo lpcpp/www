@@ -2,4 +2,4 @@
 *.png
 *.jpg
 *.JPEG
-media/*
+!media/*.jpg
