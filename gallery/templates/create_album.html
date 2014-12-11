@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>hello, album</title>
+    </head>
+    <body>
+        {{ error }}
+        <form method="post">{% csrf_token %}
+            {{ af.as_p }} 
+            <input type="submit" value="ok"/></input>
+        </form>
+    </body>
+</html>

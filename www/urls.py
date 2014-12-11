@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from blog.views import *
+import settings
 
 #from django.contrib import admin
 #admin.autodiscover()
@@ -34,4 +35,9 @@ urlpatterns = patterns('',
     url(r'^del_category/(?P<id>\d+)/$', del_category),
     url(r'^del_category_success/$', del_category_success),
 
+    url(r'^gallery/', include('gallery.urls')),
+
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('', url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),)

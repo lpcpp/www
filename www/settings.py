@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'blog',
+    'gallery',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,8 +61,13 @@ WSGI_APPLICATION = 'www.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'blogdb'),
+        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': os.path.join(BASE_DIR, 'blogdb'),
+        'NAME': 'blogdb',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -83,11 +89,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR 
+
 
 INTERNAL_IPS = ('127.0.0.1',)
 
 TEMPLATE_DIRS = ('/Library/Python/2.7/site-packages/debug_toolbar/templates',
                  '/Users/luopeng/project/www/blog/templates',
+                 '/Users/luopeng/project/www/gallery/templates',
 )
 
 
@@ -115,3 +124,5 @@ LOGGING = {
         },
     },
 }
+
+STATIC_ROOT = ''

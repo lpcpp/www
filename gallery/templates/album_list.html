@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>hello, album</title>
+    </head>
+    <body>
+        <p>
+            {% for album in albums %}
+                <a href='{{ album }}'>enter album {{ album }}</a></br>
+                <img src="{{ album.front_cover }}" /></br>
+                
+            {% endfor %}
+        </p>
+    </body>
+</html>
