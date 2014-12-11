@@ -22,3 +22,12 @@ class Photo(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    def get_thumbnail_url(self):
+        url = '/'.join(str(self.img).split('/')[-2: ])
+        return url 
+
+    def get_absolute_url(self):
+        url = '/'.join(self.url.split('/')[-2: ])
+        return url 
+

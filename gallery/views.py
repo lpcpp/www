@@ -44,13 +44,10 @@ def album_list(request):
     # 如果相册下有图片,使用第一张作为封面，否则使用默认的照片作为封面
     for album in albums:
         if album.photo_set.all():
-            logger.debug('photo_set[0]===%s', album.photo_set.all()[0])
-            album.front_cover = album.photo_set.all()[0].img
+            logger.debug('photo_set[0]===%s', album.photo_set.all()[0].img)
+            album.front_cover = '/'.join(str(album.photo_set.all()[0].img).split('/')[-2: ])
         else:
-            fn = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               'static/', 'no_front_cover.jpg')
-            album.front_cover = fn 
-
+            album.front_cover = 'no_front_cover.jpg' 
 
         logger.debug('front_cover8888===%s', album.front_cover)
 
@@ -59,6 +56,16 @@ def album_list(request):
 
 def album_detail(request, album_name):
     logger.debug('enter album_detail')
+    logger.debug('album_detail===%s', album_name)
+    album = Album.objects.get(name=album_name.rstrip('/'))
+    photos = Photo.objects.filter(album=album) 
+    if photos:
+        url = photos[0].get_absolute_url()
+        logger.debug('absolute_url===%s', url)
+
+    logger.debug('photos====%s', photos)
+    
+    return render_to_response('album_detail.html', {'album': album, 'photos': photos})
 
     
 
@@ -121,3 +128,13 @@ def upload_photo(request):
 
 def upload_photo_success(request):
     return render_to_response('upload_photo_success.html')
+
+
+def photo_detail(request, album_name, photo_name):
+    logger.debug('enter photo_detail')
+    logger.debug('phhhhhoto==%s', photo_name)
+    logger.debug('album_name==%s', album_name)
+    photo = Photo.objects.get(name=photo_name)
+    album = Album.objects.get(name=album_name)
+    return render_to_response('photo_detail.html', {'photo': photo, 'album': album})
+

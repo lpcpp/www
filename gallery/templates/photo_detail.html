@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>{{ photo }}</title>
+    </head>
+    <body>
+        <p>
+             {{ photo }}
+             <img src= "/gallery/media/{{ photo.get_absolute_url }}" width='1024' height='768'></img>
+        </p>
+    </body>
+</html>

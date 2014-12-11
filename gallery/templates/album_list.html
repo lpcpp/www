@@ -5,9 +5,9 @@
     <body>
         <p>
             {% for album in albums %}
-                <a href='{{ album }}'>enter album {{ album }}</a></br>
-                <img src="{{ album.front_cover }}" /></br>
-                
+                <a href='{{ album }}'>enter album {{ album }}</br>
+                    <img src="/gallery/media/{{ album.front_cover }}" /></br>
+                </a>
             {% endfor %}
         </p>
     </body>
