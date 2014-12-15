@@ -177,3 +177,7 @@ def category_list(request):
 def category_detail(request, id):
     category = Category.objects.get(id=int(id))
     return render_to_response('category_detail.html', {'category': category, 'request': request})
+
+
+def play_video(request):
+    return render_to_response('video.html')
