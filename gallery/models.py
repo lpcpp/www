@@ -7,6 +7,7 @@ class Album(models.Model):
     name = models.CharField(max_length=100)
     tm = models.DateTimeField('创建时间', auto_now_add=True)
     front_cover = models.CharField(max_length=100)
+    path = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.name

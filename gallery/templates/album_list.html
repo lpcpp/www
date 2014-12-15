@@ -1,14 +1,18 @@
-<html>
-    <head>
-        <title>hello, album</title>
-    </head>
-    <body>
+{% extends "base.html" %}
+{% block title %}
+    hello, album
+{% endblock %}
+{% block content %}
         <p>
             {% for album in albums %}
+                {% if request.user.is_authenticated %}
+{% comment %}                <input type="button" value="删除" onclick="alert('确定删除相册吗?该相册下的所有照片都将被删除')
+{% endcomment %}
+                <a href='/gallery/del_album/{{album}}'>删除</a>
+                {% endif %}
                 <a href='{{ album }}'>enter album {{ album }}</br>
                     <img src="/gallery/media/{{ album.front_cover }}" /></br>
                 </a>
             {% endfor %}
         </p>
-    </body>
-</html>
+{% endblock %}

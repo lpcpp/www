@@ -1,11 +1,7 @@
 {% extends "base.html" %}
-<html>
-	<head>
-		<title>this is my personal blog</title>
-	</head>
-	<body>
-		{% block content %}
-		群主是一个略微有些懒散的人，什么都没有留下
-		{% endblock %}
-	</body>
-</html>
+{% block title %}
+    this is my personal blog
+{% endblock %}
+{% block content %}
+	群主是一个略微有些懒散的人，什么都没有留下
+{% endblock %}

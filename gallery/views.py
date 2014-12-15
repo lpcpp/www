@@ -2,43 +2,52 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from gallery.models import Album, Photo
 from gallery.forms import AlbumForm, PhotoForm
 import time
 import os
+import shutil
 import Image
 import logging
+
 
 logger = logging.getLogger('runlog')
 
 
 # Create your views here.
 def create_album(request):
-    if request.method == "POST":
-        af = AlbumForm(request.POST)
-        if af.is_valid():
-            name = af.cleaned_data['name']
-            # 防止新建重复的相册
-            albums = Album.objects.all()
-            for album in albums:
-                if name in album.name:
-                    error = 'album already exist, please choose another name'
-                    return render_to_response('create_album.html', {'af': af, 'error': error}, context_instance=RequestContext(request))
-            al = Album(name=name, front_cover='')
-            al.save()
-            return HttpResponseRedirect('/gallery/create_album_success/')
-    else:
-        af = AlbumForm()
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            af = AlbumForm(request.POST)
+            if af.is_valid():
+                name = af.cleaned_data['name']
+                path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    'media', name + '/', )
+                # 防止新建重复的相册
+                albums = Album.objects.all()
+                for album in albums:
+                    if name in album.name:
+                        error = 'album already exist, please choose another name'
+                        return render_to_response('create_album.html', {'af': af, 'error': error}, context_instance=RequestContext(request))
+                al = Album(name=name, front_cover='', path=path)
+                al.save()
+                return HttpResponseRedirect('/gallery/create_album_success/')
+        else:
+            af = AlbumForm()
 
-    return render_to_response('create_album.html', {'af': af}, context_instance=RequestContext(request))
+        return render_to_response('create_album.html', {'af': af, 'request': request}, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 def create_album_success(request):
-    return render_to_response('create_album_success.html')
+    return render_to_response('create_album_success.html', {'request': request})
 
 
 def album_list(request):
+    logger.debug('rrrrrrrrrrrrequset.user==%s', request.user)
     albums = Album.objects.all()
     logger.debug('albums:%s', albums) 
     # 如果相册下有图片,使用第一张作为封面，否则使用默认的照片作为封面
@@ -51,7 +60,7 @@ def album_list(request):
 
         logger.debug('front_cover8888===%s', album.front_cover)
 
-    return render_to_response('album_list.html', {'albums': albums})
+    return render_to_response('album_list.html', {'albums': albums, 'request': request})
 
 
 def album_detail(request, album_name):
@@ -65,7 +74,7 @@ def album_detail(request, album_name):
 
     logger.debug('photos====%s', photos)
     
-    return render_to_response('album_detail.html', {'album': album, 'photos': photos})
+    return render_to_response('album_detail.html', {'album': album, 'photos': photos, 'request': request})
 
     
 
@@ -105,29 +114,36 @@ def make_thumbnail(f):
 
 
 def upload_photo(request):
-    if request.method == "POST":
-        logger.debug('FFFFFFFILES==%s', request.FILES)
-        pf = PhotoForm(request.POST, request.FILES)
-        logger.debug('pf====%s', pf)
-        if pf.is_valid():
-            name = pf.cleaned_data['name']
-            album = pf.cleaned_data['album']
-            fn = request.FILES['img'].name
-            url = handle_upload_photo(request.FILES['img'], str(album), fn)
-            thumbnail = make_thumbnail(url) 
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            logger.debug('FFFFFFFILES==%s', request.FILES)
+            pf = PhotoForm(request.POST, request.FILES)
+            logger.debug('pf====%s', pf)
+            if pf.is_valid():
+                name = pf.cleaned_data['name']
+                photos = Photo.objects.filter(name=name)
+                if photos:
+                    error = 'this photo name has already exist, please use another one'
+                    return render_to_response('upload_photo.html', {'pf': pf, 'error': error}, context_instance=RequestContext(request))
+                album = pf.cleaned_data['album']
+                fn = request.FILES['img'].name
+                url = handle_upload_photo(request.FILES['img'], str(album), fn)
+                thumbnail = make_thumbnail(url) 
             
-            #img字段不再用来存储上传的图像,而是存储生成的缩略图thumbnail
-            photo = Photo(name=name, url=url, img=thumbnail, album=album)
-            photo.save()
-            return HttpResponseRedirect('/gallery/upload_photo_success/')
-    else:
-        pf = PhotoForm()
-        albums = Album.objects.all()
-    return render_to_response('upload_photo.html', {'pf': pf}, context_instance=RequestContext(request))
+                #img字段不再用来存储上传的图像,而是存储生成的缩略图thumbnail
+                photo = Photo(name=name, url=url, img=thumbnail, album=album)
+                photo.save()
+                return HttpResponseRedirect('/gallery/upload_photo_success/')
+        else:
+            pf = PhotoForm()
+            albums = Album.objects.all()
+        return render_to_response('upload_photo.html', {'pf': pf, 'request': request}, context_instance=RequestContext(request))
+
+    return HttpResponseRedirect('/login/')
 
 
 def upload_photo_success(request):
-    return render_to_response('upload_photo_success.html')
+    return render_to_response('upload_photo_success.html', {'request': request})
 
 
 def photo_detail(request, album_name, photo_name):
@@ -136,5 +152,28 @@ def photo_detail(request, album_name, photo_name):
     logger.debug('album_name==%s', album_name)
     photo = Photo.objects.get(name=photo_name)
     album = Album.objects.get(name=album_name)
-    return render_to_response('photo_detail.html', {'photo': photo, 'album': album})
+    return render_to_response('photo_detail.html', {'photo': photo, 'album': album, 'request': request})
 
+
+def del_photo(request, photo_name):
+    logger.debug('enter del_photo')
+    photo = Photo.objects.filter(name=photo_name)[0]
+    album = photo.album
+    url = photo.url
+    img = photo.img
+    photo.delete()
+    os.remove(str(url))
+    os.remove(str(img))
+    url = '/gallery/' + '/album_list/' + str(album) 
+    logger.debug('uuuuuuuuuuurl===%s', url)
+    return HttpResponseRedirect(url)
+
+
+def del_album(reqeuset, album_name):
+    logger.debug('enter del_album')
+    album = Album.objects.filter(name=album_name)[0]
+    path = album.path
+    album.delete()
+    shutil.rmtree(path)
+    
+    return HttpResponseRedirect('/gallery/album_list/')

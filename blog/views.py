@@ -13,10 +13,12 @@ from django.core.paginator import EmptyPage
 logger = logging.getLogger('runlog')
 
 
-@login_required
 def add_category(request):
     logger.debug('enter add category')
-    return render_to_response('add_category.html', context_instance=RequestContext(request))
+    if request.user.is_authenticated():
+        return render_to_response('add_category.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 @login_required
@@ -92,7 +94,6 @@ def log_out(request):
     logout(request)
     return HttpResponseRedirect('/login/')
 
-@login_required
 def backyard(request):
     logger.debug('enter backyard') 
     if request.user.is_authenticated():
@@ -141,9 +142,12 @@ def about(request):
 
 
 def del_blog(request, id):
-    logger.debug('enter del_blog')
-    Blog.objects.get(id=int(id)).delete()
-    return HttpResponseRedirect('/del_blog_success/')
+    if request.user.is_authenticated():
+        logger.debug('enter del_blog')
+        Blog.objects.get(id=int(id)).delete()
+        return HttpResponseRedirect('/del_blog_success/')
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 def del_blog_success(request):
@@ -152,9 +156,12 @@ def del_blog_success(request):
 
 
 def del_category(request, id):
-    logger.debug('enter del_category')
-    Category.objects.get(id=int(id)).delete()
-    return HttpResponseRedirect('/del_category_success/')
+    if request.user.is_authenticated():
+        logger.debug('enter del_category')
+        Category.objects.get(id=int(id)).delete()
+        return HttpResponseRedirect('/del_category_success/')
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 def del_category_success(request):
