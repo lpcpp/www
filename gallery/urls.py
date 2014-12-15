@@ -14,4 +14,7 @@ urlpatterns = patterns('',
 
     url(r'album_list/(?P<album_name>.+)/(?P<photo_name>.+)/$', photo_detail),
     url(r'album_list/(?P<album_name>.+)/$', album_detail),
+
+    url(r'del_album/(?P<album_name>.+)/$', del_album),
+    url(r'del_photo/(?P<photo_name>.+)/$', del_photo),
 )

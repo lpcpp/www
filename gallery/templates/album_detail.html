@@ -1,14 +1,17 @@
-<html>
-    <head>
-        <title>{{ album }}</title>
-    </head>
+{% extends "base.html" %}
+{% block title %}
+    {{ album }}
+{% endblock %}
+{% block content %}
     <body>
         <p>
             {% for photo in photos %}
+                {% if request.user.is_authenticated %}
+                    <a href = "/gallery/del_photo/{{photo}}"/>删除</a>
+                {% endif %}
                 <a href="/gallery/album_list/{{ album }}/{{ photo }}">{{ photo }}</br>
                     <img src="/gallery/media/{{ photo.get_thumbnail_url }}" /></br>
                 </a>
             {% endfor %}
         </p>
-    </body>
-</html>
+{% endblock %}

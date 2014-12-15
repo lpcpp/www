@@ -6,6 +6,7 @@ from django import forms
 
 class AlbumForm(ModelForm):
     front_cover = forms.CharField(widget=forms.HiddenInput(attrs={'value': 'init'}))
+    path = forms.CharField(widget=forms.HiddenInput(attrs={'value': 'init'}))
     class Meta:
         model = Album
         
