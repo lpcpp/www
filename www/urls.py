@@ -37,6 +37,7 @@ urlpatterns = patterns('',
 
     url(r'^gallery/', include('gallery.urls')),
 
+    url(r'^videoplay/$', play_video),
 )
 
 if settings.DEBUG:
