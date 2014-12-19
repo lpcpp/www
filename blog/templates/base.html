@@ -77,15 +77,22 @@
                 </div>
                 <div id="sidebar">
                     {% block sidebar %}
-                        微博链接</br>
-                        日历</br>
-                        今日天气</br>
+                        <form action="/blog/search/" method="get">
+                            <p>
+                                <input type="text" name="search" />
+                                <input type="submit" value="Search" />
+                            </p>
+                        </form>
                     {% endblock %}
+                    微博链接</br>
+                    日历</br>
+                    今日天气</br>
                 </div>
             </div>
             <div id="footer">
                 <p>
-                    All right reserved 
+                    All right reserved &nbsp&nbsp
+                    <a href="/contact/">Contact us!</a>
                 </p>
             </div>
         </div>
