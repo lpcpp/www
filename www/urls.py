@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     url(r'^backyard/$', backyard, name="backyard"),
     url(r'^index/$', index),
+    url(r'^blog/$', index),
 
     url(r'^add_blog/$', add_blog),
     url(r'^add_blog_success/$', add_blog_success, name="add_blog_success"),
@@ -38,6 +39,11 @@ urlpatterns = patterns('',
     url(r'^gallery/', include('gallery.urls')),
 
     url(r'^videoplay/$', play_video),
+
+    url(r'^blog/search/$', search),
+
+    url(r'^contact/$', contact),
+    url(r'^contact/send_mail_success/$', send_mail_success),
 )
 
 if settings.DEBUG:

@@ -9,6 +9,8 @@ import logging
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
+from django.core.mail import send_mail
+from www.settings import EMAIL_USER_TO, EMAIL_HOST_USER
 
 logger = logging.getLogger('runlog')
 
@@ -58,7 +60,7 @@ def add_blog_success(request):
         caption = request.POST['caption']
         content = request.POST['content']
         category = request.POST['category']
-        logger.debug('category======%s', str(dir(category)))
+        #logger.debug('category======%s', str(dir(category)))
         c = Category.objects.get(name=category)
         b = Blog(caption=caption, content=content, category=c)
         b.save()
@@ -94,20 +96,28 @@ def log_out(request):
     logout(request)
     return HttpResponseRedirect('/login/')
 
+
+def paginator(blogs, page, num=1):
+    logger.debug('page=%s, blogs=%s',page, blogs)
+    paginator = Paginator(blogs, num)
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
+
+    logger.debug('bbloooogs=%s', blogs)
+    return blogs
+
+
 def backyard(request):
     logger.debug('enter backyard') 
     if request.user.is_authenticated():
         logger.debug('backyard user is authenticated') 
         blogs = Blog.objects.all().order_by('-tm')
-        paginator = Paginator(blogs, 10)
         page = request.GET.get('page')
-        logger.debug('paginator.num_pages:%s', paginator.num_pages)
-        try:
-            blogs = paginator.page(page)
-        except PageNotAnInteger:
-            blogs = paginator.page(1)
-        except EmptyPage:
-            blogs = paginator.page(paginator.num_pages)
+        blogs = paginator(blogs, page, num=10)
 
         return render_to_response('backend.html', {'blogs': blogs}, context_instance=RequestContext(request))
     else:
@@ -115,18 +125,13 @@ def backyard(request):
         return HttpResponseRedirect('/login/')
 
 
-
 def index(request):
     blogs = Blog.objects.all().order_by('-tm')
-    paginator = Paginator(blogs, 5)
+    logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')
-    try:
-        blogs = paginator.page(page)
-    except PageNotAnInteger:
-        blogs = paginator.page(1)
-    except EmptyPage:
-        blogs = paginator.page(paginator.num_pages)
+    blogs = paginator(blogs, page)
     logger.debug('request.user=%s', request.user)
+    logger.debug('blogs==%s', blogs)
     return render_to_response('index.html', {'blogs': blogs, 'request': request})
 
 
@@ -181,3 +186,49 @@ def category_detail(request, id):
 
 def play_video(request):
     return render_to_response('video.html')
+
+
+def search(request):
+    logger.debug('enter request')
+    logger.debug('request.get==%s', request.GET)
+    logger.debug('request.user==%s', request.user)
+    if 'q' in request.GET:
+        q = request.GET['q']
+        if not q:
+            q = 'theweatherisgood' 
+            blogs = []
+            return render_to_response('index.html', {'blogs': blogs, 'query':q, 'request': request})
+
+        else:
+            q = request.GET.get('q')
+            if '?' in q:
+                page = int(q.split('=')[-1])
+                q = q.split('?')[0]
+            else:
+                page = 1
+            blogs = Blog.objects.filter(caption__icontains=q)
+            if blogs:
+                length = len(blogs)
+            else:
+                length = 0
+            logger.debug('pppppppppage=%s', page)
+            logger.debug('bxxxxxxe=%s', blogs)
+            blogs = paginator(blogs, page)
+            logger.debug('bbbbbbe=%s', blogs)
+    return render_to_response('index.html', {'blogs': blogs, 'query':q, 'len': length, 'request': request})
+
+
+def contact(request):
+    if request.method == "POST":
+        subject = request.POST['subject']
+        message = request.POST['message']
+        sender = request.POST['sender']
+        logger.info('sender=%s', sender)
+        send_mail(subject, message, EMAIL_HOST_USER, [EMAIL_USER_TO], fail_silently=True)
+        return HttpResponseRedirect('/contact/send_mail_success/')
+         
+    return render_to_response('contact.html', {'request': request}, context_instance=RequestContext(request))
+
+
+def send_mail_success(request):
+    return render_to_response('send_mail_success.html')

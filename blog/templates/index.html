@@ -3,6 +3,16 @@
     blog page
 {% endblock %}
 {% block content %}
+    {% if query %}
+        {% ifequal "theweatherisgood" query %}
+            you committed a blank form
+        {% else %}
+            you searched for {{query}}
+        {% endifequal %}
+    {% endif %}
+    {% if len %}
+        there are {{ len }} items.
+    {% endif %}
 	{% for blog in blogs %}
 		<p><a href="/detail/{{ blog.id }}">{{ blog.caption }}</a> &nbsp;&nbsp;{{ blog.tm }} {{ blog.category }}</p>
 		<p>{{ blog.content|slice:"300" }}
@@ -10,15 +20,30 @@
     <div class="pagination">
         <span class="step-links">
             {% if blogs.has_previous %}
-                <a href="?page={{ blogs.previous_page_number }}">previous</a>
+                {% if query %}
+                    <a href="?q={{query}}?page={{ blogs.previous_page_number }}">previous</a>
+                {% else %}
+                    <a href="?page={{ blogs.previous_page_number }}">previous</a>
+                {% endif %}
             {% endif %}
             <span class="current">
                 Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
             </span>
             {% if blogs.has_next %}
-                <a href="?page={{ blogs.next_page_number }}">next</a>
+                {% if query %}
+                    <a href="?q={{query}}?page={{ blogs.next_page_number }}">next</a>
+                {% else %}
+                    <a href="?page={{ blogs.next_page_number }}">next</a>
+                {% endif %}
             {% endif %}
         </span>
     </div>
 {% endblock %}
-
+{% block sidebar %}
+    <p>
+        <form action="/blog/search/" method="GET">
+             <input type="text" name="q" />
+             <input type="submit" value="Search" />
+       </form>
+    </p>
+{% endblock %}

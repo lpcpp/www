@@ -27,6 +27,18 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ADMINS = (
+    ('django', 'lp_cpp@163.com'),
+)
+
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'lp_cpp@163.com'
+EMAIL_HOST_PASSWORD = 'Fe9viu7g'
+EMAIL_USER_TLS = True
+
+EMAIL_USER_TO = '517145673@qq.com'
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -91,6 +103,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR + '/gallery/media/' 
 MEDIA_URL = '/gallery/media/' 
+#STATIC_ROOT = BASE_DIR + '/www/'
 STATIC_ROOT = ''
 
 
@@ -118,10 +131,17 @@ LOGGING = {
               'class': 'logging.StreamHandler',
               'formatter': 'standard',
           },
+         'server_log':{
+              'level': 'INFO',
+              'class': 'logging.handlers.RotatingFileHandler',
+              'filename': os.path.join(BASE_DIR + '/www/' +
+'logs/', 'log'),
+              'formatter': 'standard',
+          },
     },
     'loggers':{
         'runlog':{
-            'handlers':['default',],
+            'handlers':['default', 'server_log'],
             'propagate': False
         },
     },
