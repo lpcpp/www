@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'blog',
     'gallery',
+    'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,18 +102,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR + '/gallery/media/' 
-MEDIA_URL = '/gallery/media/' 
-#STATIC_ROOT = BASE_DIR + '/www/'
-STATIC_ROOT = ''
+#STATIC_ROOT = ''
 
-VERIFY_CODE_TTF = BASE_DIR + '/blog/static/fonts/LucidaSansRegular.ttf'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/' 
+
+
+STATICFILES_DIR = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+VERIFY_CODE_TTF = BASE_DIR + '/static/fonts/LucidaSansRegular.ttf'
+
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+CKEDITOR_MEDIA_PREFIX = BASE_DIR + '/static/ckeditor'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
 TEMPLATE_DIRS = ('/Library/Python/2.7/site-packages/debug_toolbar/templates',
-                 '/Users/luopeng/project/www/blog/templates',
-                 '/Users/luopeng/project/www/gallery/templates',
+                 BASE_DIR + '/blog/templates',
+                 BASE_DIR + '/gallery/templates',
 )
 
 

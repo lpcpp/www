@@ -1,4 +1,7 @@
 {% extends "backend.html" %}
+        {% block javascript %}
+            <script type="text/javascript" src="{{ BASE_DIR }}/static/ckeditor/ckeditor/ckeditor.js"></script>
+        {% endblock %}
 		{% block title %}发表博客{% endblock %}
         {% block content %}
 		<form action="../add_blog_success/" method="post"> {% csrf_token %}
@@ -15,7 +18,10 @@
                             </select>
                         </p>
 			<p>正文:</p>
-			<p><textarea name="content" cols="60" rows="20" >{{ blog.content }}</textarea></p>
+			<!--<p><textarea name="content" cols="60" rows="20" >{{ blog.content }}</textarea></p> --!>
+            <p>
+                <textarea style="width:300px;height=500px;" class="ckeditor" name="content"></textarea>
+            </p>
 			<p><input type="submit" value="发表">
 		</form>
         {% endblock %}

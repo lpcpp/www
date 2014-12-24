@@ -52,6 +52,8 @@ urlpatterns = patterns('',
     url(r'^register/activation_error/$', activate_error),
     url(r'^register/activation/$', activate_state),
     url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', activate),
+
+    #url(r'^ckeditor/', include('ckeditor.urls')),
 )
 
 if settings.DEBUG:

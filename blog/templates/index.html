@@ -15,7 +15,7 @@
     {% endif %}
 	{% for blog in blogs %}
 		<p><a href="/detail/{{ blog.id }}">{{ blog.caption }}</a> &nbsp;&nbsp;{{ blog.tm }} {{ blog.category }}</p>
-		<p>{{ blog.content|slice:"300" }}
+		<p>{{ blog.content|slice:"300"|safe }}
 	{% endfor %}
     <div class="pagination">
         <span class="step-links">

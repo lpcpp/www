@@ -1,6 +1,7 @@
 #!-*-coding:utf-8-*-
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Category(models.Model):
@@ -25,7 +26,8 @@ class Category(models.Model):
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)
     caption = models.CharField(max_length=200)
-    content = models.TextField()
+    content = RichTextField()
+#    content = models.TextField()
     category = models.ForeignKey(Category)
     user = models.ForeignKey(User)
     tm = models.DateTimeField('发表时间', auto_now_add=True)
