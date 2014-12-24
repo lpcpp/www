@@ -3,3 +3,4 @@
 *.jpg
 *.JPEG
 media/*
+!gallery/static/header_bg.jpg

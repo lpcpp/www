@@ -7,6 +7,9 @@
 	<body>
         {% block head %}
 		<div>
+			<a href="/account/{{request.user}}/"><input type="button">{{ request.user }}</input></a>
+		</div>
+		<div>
 			<a href="/index/"><input type="button">首页</input></a>
 		</div>
 		<div>
