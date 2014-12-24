@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>login page</title>
+        <title>register page</title>
         <meta charset="utf-8">
     </head>
     <body>
@@ -11,12 +11,12 @@
                      {{ error }}
                 {% endfor %}
             {% endif %}
-            {{ lf.as_p }}
+            {{ rf.as_p }}
             <p>
-                <img src="/verify_code/" />
+                <img src="/verify_code/" onclick="this.setAttribute('src', 'verify_code/" alt="CheckCode"/>
             </p>
             <p>
-                <input type="submit" value="登录"/>
+                <input type="submit" value="注册"/>
                 <input type="reset" value="重置"/>
             </p>
         </form>

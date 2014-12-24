@@ -106,6 +106,7 @@ MEDIA_URL = '/gallery/media/'
 #STATIC_ROOT = BASE_DIR + '/www/'
 STATIC_ROOT = ''
 
+VERIFY_CODE_TTF = BASE_DIR + '/blog/static/fonts/LucidaSansRegular.ttf'
 
 INTERNAL_IPS = ('127.0.0.1',)
 

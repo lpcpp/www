@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from blog.views import *
+from blog.verifycode import verify_code
 import settings
 
 #from django.contrib import admin
@@ -44,6 +45,13 @@ urlpatterns = patterns('',
 
     url(r'^contact/$', contact),
     url(r'^contact/send_mail_success/$', send_mail_success),
+
+    url(r'^verify_code/$', verify_code),
+    url(r'^register/$', register),
+    url(r'^register/success/$', register_success),
+    url(r'^register/activation_error/$', activate_error),
+    url(r'^register/activation/$', activate_state),
+    url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', activate),
 )
 
 if settings.DEBUG:
