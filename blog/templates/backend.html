@@ -46,7 +46,7 @@
 				{{ blog.tm }}
 				</p>
 				<p>
-					{{ blog.content | slice:"300" }}
+					{{ blog.content | slice:"300" | safe }}
 					{# { blog.content | truncatewords:30 }} #}
 				</p>
 

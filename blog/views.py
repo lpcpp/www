@@ -231,7 +231,7 @@ def index(request):
     blogs = Blog.objects.filter(user=request.user).order_by('-tm')
     logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')
-    blogs = paginator(blogs, page)
+    blogs = paginator(blogs, page, num=10)
     logger.debug('request.user=%s', request.user)
     logger.debug('blogs==%s', blogs)
     return render_to_response('index.html', {'blogs': blogs, 'request': request})
@@ -259,7 +259,7 @@ def del_blog(request, id):
 
 def del_blog_success(request):
     logger.debug('enter del blog success')
-    return render_to_response('del_blog_success.html')
+    return render_to_response('del_blog_success.html', {'request': request})
 
 
 def del_category(request, id):
@@ -273,7 +273,7 @@ def del_category(request, id):
 
 def del_category_success(request):
         logger.debug('enter del category success')
-        return render_to_response('del_blog_success.html')
+        return render_to_response('del_blog_success.html', {'request': request})
 
 
 def category_list(request):
@@ -315,7 +315,7 @@ def search(request):
                 length = 0
             logger.debug('pppppppppage=%s', page)
             logger.debug('bxxxxxxe=%s', blogs)
-            blogs = paginator(blogs, page)
+            blogs = paginator(blogs, page, num=10)
             logger.debug('bbbbbbe=%s', blogs)
     return render_to_response('index.html', {'blogs': blogs, 'query':q, 'len': length, 'request': request})
 

@@ -10,7 +10,7 @@
                     <a href = "/gallery/del_photo/{{photo}}"/>删除</a>
                 {% endif %}
                 <a href="/gallery/album_list/{{ album }}/{{ photo }}">{{ photo }}</br>
-                    <img src="/gallery/media/{{ photo.get_thumbnail_url }}" /></br>
+                    <img src="/media/{{ photo.get_thumbnail_url }}" /></br>
                 </a>
             {% endfor %}
         </p>

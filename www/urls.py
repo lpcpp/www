@@ -57,4 +57,4 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns('', url(r'^gallery/media/(?P<path>.+)/$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),)
+    urlpatterns += patterns('', url(r'^media/(?P<path>.+)/$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),)

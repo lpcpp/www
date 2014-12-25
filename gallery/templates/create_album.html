@@ -5,7 +5,9 @@
 {% block content %}
         {{ error }}
         <form method="post">{% csrf_token %}
-            {{ af.as_p }} 
+            <p>
+                Name: <input type="text" name="name" />
+            </p>
             <input type="submit" value="ok"/></input>
         </form>
 {% endblock %}

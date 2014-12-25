@@ -26,6 +26,12 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LANGUAGE_CODE = 'zh-cn'
+
+TIME_ZONE = 'Asia/Shanghai'
+
+USE_TZ = True
+
 
 ADMINS = (
     ('django', 'lp_cpp@163.com'),

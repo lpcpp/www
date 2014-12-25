@@ -9,8 +9,10 @@ from gallery.forms import AlbumForm, PhotoForm
 import time
 import os
 import shutil
-import Image
+from PIL import Image
+import cStringIO
 import logging
+from www.settings import MEDIA_ROOT
 
 
 logger = logging.getLogger('runlog')
@@ -20,35 +22,34 @@ logger = logging.getLogger('runlog')
 def create_album(request):
     if request.user.is_authenticated():
         if request.method == "POST":
-            af = AlbumForm(request.POST)
-            if af.is_valid():
-                name = af.cleaned_data['name']
-                path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                    'media', name + '/', )
-                # 防止新建重复的相册
-                albums = Album.objects.all()
-                for album in albums:
-                    if name in album.name:
-                        error = 'album already exist, please choose another name'
-                        return render_to_response('create_album.html', {'af': af, 'error': error}, context_instance=RequestContext(request))
-                al = Album(name=name, front_cover='', path=path)
-                al.save()
-                return HttpResponseRedirect('/gallery/create_album_success/')
-        else:
-            af = AlbumForm()
+            name = request.POST['name']
+            path = os.path.join(MEDIA_ROOT, name)
+            logger.debug('pppppath====%s', path)
+            # 防止新建重复的相册
+            albums = Album.objects.filter(owner=request.user)
 
-        return render_to_response('create_album.html', {'af': af, 'request': request}, context_instance=RequestContext(request))
+            for album in albums:
+                if name in album.name:
+                    error = 'album already exist, please choose another name'
+                    return render_to_response('create_album.html', {'error': error}, context_instance=RequestContext(request))
+            al = Album(name=name, front_cover='', path=path, owner=request.user)
+            al.save()
+            logger.debug('create_album success')
+            return HttpResponseRedirect('/gallery/create_album_success/')
+
+        return render_to_response('create_album.html', {'request': request}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
 
 def create_album_success(request):
+    logger.debug('enter create_album_success')
     return render_to_response('create_album_success.html', {'request': request})
 
 
 def album_list(request):
     logger.debug('rrrrrrrrrrrrequset.user==%s', request.user)
-    albums = Album.objects.all()
+    albums = Album.objects.filter(owner=request.user)
     logger.debug('albums:%s', albums) 
     # 如果相册下有图片,使用第一张作为封面，否则使用默认的照片作为封面
     for album in albums:
@@ -85,8 +86,7 @@ def handle_upload_photo(f, album, fn): #f:图像文件句柄, album:相册名称
     """
     logger.debug('enter handle_upload_photo')
     tm = time.strftime('%Y%m%d%H%M%S')
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        'media', album + '/', )
+    path = os.path.join(MEDIA_ROOT, album) + '/'
     logger.debug('ppppppath===%s', path)
     suffix_type = fn.split('.')[-1]
     logger.debug('suffix_type:%s', suffix_type)
@@ -97,12 +97,13 @@ def handle_upload_photo(f, album, fn): #f:图像文件句柄, album:相册名称
     destination = open(url, 'wb+')
     for chunk in f.chunks():
         destination.write(chunk)
+    destination.close()
 
     return url 
 
 
 def make_thumbnail(f):
-    logger.debug('ffffff===%s', f)
+    logger.debug('enter make_thumbnail=%s', f)
     img = Image.open(f)
     img.thumbnail((256, 256), Image.ANTIALIAS)
     suffix_type = f.split('.')[-1]
@@ -129,6 +130,7 @@ def upload_photo(request):
                 fn = request.FILES['img'].name
                 url = handle_upload_photo(request.FILES['img'], str(album), fn)
                 thumbnail = make_thumbnail(url) 
+                # thumbnail = make_thumbnail(request.FILES['img']) 
             
                 #img字段不再用来存储上传的图像,而是存储生成的缩略图thumbnail
                 photo = Photo(name=name, url=url, img=thumbnail, album=album)
@@ -174,6 +176,9 @@ def del_album(reqeuset, album_name):
     album = Album.objects.filter(name=album_name)[0]
     path = album.path
     album.delete()
-    shutil.rmtree(path)
+    try:
+        shutil.rmtree(path)
+    except:
+        pass
     
     return HttpResponseRedirect('/gallery/album_list/')
