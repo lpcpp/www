@@ -228,6 +228,15 @@ def backyard(request):
 
 
 def index(request):
+    blogs = Blog.objects.all().order_by('-tm')
+    logger.debug('blogs==%s', blogs)
+    page = request.GET.get('page')
+    blogs = paginator(blogs, page, num=10)
+    logger.debug('request.user=%s', request.user)
+    logger.debug('blogs==%s', blogs)
+    return render_to_response('index.html', {'blogs': blogs, 'request': request})
+
+def blog(request):
     blogs = Blog.objects.filter(user=request.user).order_by('-tm')
     logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')

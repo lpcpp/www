@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^backyard/$', backyard, name="backyard"),
     url(r'^index/$', index),
     url(r'^$', index),
-    url(r'^blog/$', index),
+    url(r'^blog/$', blog),
 
     url(r'^add_blog/$', add_blog),
     url(r'^add_blog_success/$', add_blog_success, name="add_blog_success"),
