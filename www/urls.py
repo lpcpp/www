@@ -17,6 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^backyard/$', backyard, name="backyard"),
     url(r'^index/$', index),
+    url(r'^$', index),
     url(r'^blog/$', index),
 
     url(r'^add_blog/$', add_blog),
