@@ -14,7 +14,7 @@
         there are {{ len }} items.
     {% endif %}
 	{% for blog in blogs %}
-		<p><a href="/detail/{{ blog.id }}">{{ blog.caption }}</a> &nbsp;&nbsp;{{ blog.tm }} {{ blog.category }}</p>
+		<p><a href="/detail/{{ blog.id }}"><h4>{{ blog.caption }}</h4></a> &nbsp;&nbsp;{{ blog.tm }} {{ blog.category }}</p>
 		<p>{{ blog.content|slice:"300"|safe }}
 	{% endfor %}
     <div class="pagination">
@@ -38,12 +38,4 @@
             {% endif %}
         </span>
     </div>
-{% endblock %}
-{% block sidebar %}
-    <p>
-        <form action="/blog/search/" method="GET">
-             <input type="text" name="q" />
-             <input type="submit" value="Search" />
-       </form>
-    </p>
 {% endblock %}

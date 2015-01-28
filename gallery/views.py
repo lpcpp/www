@@ -49,6 +49,8 @@ def create_album_success(request):
 
 def album_list(request):
     logger.debug('rrrrrrrrrrrrequset.user==%s', request.user)
+    if not request.user.is_authenticated():
+        return render_to_response("no_album.html")
     albums = Album.objects.filter(owner=request.user)
     logger.debug('albums:%s', albums) 
     # 如果相册下有图片,使用第一张作为封面，否则使用默认的照片作为封面

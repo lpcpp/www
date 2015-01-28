@@ -228,6 +228,7 @@ def backyard(request):
 
 
 def index(request):
+    logger.debug('enter index')
     blogs = Blog.objects.all().order_by('-tm')
     logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')
@@ -237,7 +238,11 @@ def index(request):
     return render_to_response('index.html', {'blogs': blogs, 'request': request})
 
 def blog(request):
-    blogs = Blog.objects.filter(user=request.user).order_by('-tm')
+    logger.debug('enter blog')
+    if request.user.is_authenticated():
+        blogs = Blog.objects.filter(user=request.user).order_by('-tm')
+    else:
+        blogs = Blog.objects.all().order_by('-tm')
     logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')
     blogs = paginator(blogs, page, num=10)
@@ -254,7 +259,7 @@ def detail(request, id):
 
 
 def about(request):
-    return render_to_response('about.html')
+    return render_to_response('about.html', {'request': request})
 
 
 def del_blog(request, id):
@@ -296,7 +301,7 @@ def category_detail(request, id):
 
 
 def play_video(request):
-    return render_to_response('video.html')
+    return render_to_response('video.html', {'request': request})
 
 
 def search(request):

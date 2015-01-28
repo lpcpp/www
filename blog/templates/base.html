@@ -7,94 +7,85 @@
                 个人生活学习博客
             {% endblock %}
         </title>
-        <style>
-           a {text-decoration: none;}
-           #skeleton {
-               width: 1400px;
-               height: 2000px;
-           } 
-           #header {
-               width: 1400px;
-               height: 265px;
-               background: url('../static/header_bg.jpg') no-repeat;
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/2.3.0/css/bootstrap.min.css" rel="stylesheet"> 
+        <style type="text/css">
+           body {
+               background-color: #ccc;
            }
-           #texttop{
-               width: 400px;
-               height: 30px; 
-               padding: 50px;
+           .container {
+               background-color: white;
+               padding: 10px;
            }
-           #category{
-               margin: 100px; 
-               width: 1000px;
-               height: 50;
-               
-           }
-           #content{
-               width: 1000px;
-               height: 1500px;
-               background: white;
-               float: left;
-           }
-           #sidebar{
-               width: 400px;
-               height: 1500px;
-               background: white;
-               float: left;
-           }
-           #footer{
-               width: 1400px;
-               height: 30px;
-               background: white;
-               float: left;
+           .container-fluid {
+               background-color: white;
            }
         </style>
     </head>
     <body>
-        <div id="skeleton">
-            <div id="header">
-                <div id="texttop">
-                    {% if request.user.is_authenticated %}
-                        欢迎您,{{ request.user }}
-                        &nbsp <a href="/backyard">后台</a>
-                        &nbsp <a href="/logout/">登出</a>
-                    {% else %}
-                        <a href="/login/">登陆</a>
-                    {% endif %}
-                    博客测试，欢迎标题 
-                </div>
-                <div id="category">
-                    <span><a href="/index/">首页&nbsp;&nbsp;</a></span>
-                    <span><a href="/blog/">博客&nbsp;&nbsp;</a></span>
-                    <span><a href="/videoplay/">视频&nbsp;&nbsp;</a></span>
-                    <span><a href="/gallery/album_list/">相册&nbsp;&nbsp;</a></span>
-                    <span><a href="/map/">地图&nbsp;&nbsp;</a></span>
-                    <span><a href="/about/">关于博主&nbsp;&nbsp;</a></span>
-                </div>
+        <div class="container">
+            <h5>
+                {% if request.user.is_authenticated %}
+                    欢迎您,{{ request.user }}
+                    &nbsp <a href="/backyard">后台</a>
+                    &nbsp <a href="/logout/">登出</a>
+                {% else %}
+                    <a href="/login/">登陆</a>
+                {% endif %}
+                博客测试，欢迎标题 
+            </h5>
+            <div >
+                <ul class="nav nav-pills">
+                    <li class="active"> <a href="/index/">首页&nbsp;&nbsp;</a></span>
+                    <li><a href="/blog/">博客&nbsp;&nbsp;</a></span></li>
+                    <li><a href="/videoplay/">视频&nbsp;&nbsp;</a></span></li>
+                    <li><a href="/gallery/album_list/">相册&nbsp;&nbsp;</a></span></li>
+                    <li><a href="/map/">地图&nbsp;&nbsp;</a></span></li>
+                    <li><a href="/about/">关于博主&nbsp;&nbsp;</a></span></li>
+                </ul>
             </div>
-            <div id="middle">
-                <div id="content">
-                {% block content %}{% endblock %} 
+            <div id="content" class="row-fluid">
+                <div class="span9 main">
+                    {% block content %}{% endblock %} 
                 </div>
-                <div id="sidebar">
+                <div class="span3 sidebar">
                     {% block sidebar %}
-                        <form action="/blog/search/" method="get">
-                            <p>
-                                <input type="text" name="search" />
-                                <input type="submit" value="Search" />
-                            </p>
+                        <form class="form-search" action="/blog/search/" method="GET">
+                            <div class="input-append">
+                                <input type="text" class="span8 search-query" name="q" />
+                                <button type="submit" class="btn">Search</button>
+                            </div>
                         </form>
                     {% endblock %}
+                        <iframe src="http://m.weather.com.cn/m/pn4/weather.htm?id=101010100T " width="160" height="20" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>  
                     微博链接</br>
                     日历</br>
                     今日天气</br>
                 </div>
             </div>
-            <div id="footer">
-                <p>
+            <div id="footer" style="text-align:center">
                     All right reserved &nbsp&nbsp
                     <a href="/contact/">Contact us!</a>
-                </p>
             </div>
         </div>
+        <script type="text/javascript">
+            function () {
+                $('.nav li').removeClass('active');
+                $(this).addClass('active');
+                alert('aaa');
+            };
+        </script>
+        <!--<script type="text/javascript">
+            $(function() {
+                alert('aaa');
+                $('.nav li').click(function() {
+                alert('aaa');
+                $('.nav li').removeClass('active');
+                $(this).addClass('active');
+                });
+            });
+        </script> --!>
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/jsbootstrap-combined.min.js"></script>
     </body>
 </html>

@@ -1,0 +1,9 @@
+<uwsgi>
+    <socket>127.0.0.1:9090</socket>
+    <chdir>/Users/luopeng/project/www/</chdir>
+    <pythonpath>/Users/luopeng/project/www/www/</pythonpath>
+    <module>wsgi</module>
+    <enable-threads>true</enable-threads>
+    <master>true</master>
+    <process>2</process>
+</uwsgi>

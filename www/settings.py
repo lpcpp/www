@@ -54,10 +54,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
+    #'debug_toolbar',
     'blog',
     'gallery',
-    'ckeditor',
+  #  'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,7 +67,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'www.urls'
@@ -107,21 +107,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'gallery/media') 
+
 STATIC_URL = '/static/'
-#STATIC_ROOT = ''
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
-MEDIA_URL = '/media/' 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
 
 STATICFILES_DIR = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'blog/static'),
+    os.path.join(BASE_DIR, 'gallery/static'),
 )
 
 VERIFY_CODE_TTF = BASE_DIR + '/static/fonts/LucidaSansRegular.ttf'
 
-CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
-CKEDITOR_MEDIA_PREFIX = BASE_DIR + '/static/ckeditor'
+#CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+#CKEDITOR_MEDIA_PREFIX = BASE_DIR + '/static/ckeditor'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
