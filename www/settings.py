@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     #'debug_toolbar',
     'blog',
     'gallery',
+    'rest_framework',
   #  'ckeditor',
 )
 
