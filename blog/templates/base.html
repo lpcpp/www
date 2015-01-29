@@ -7,6 +7,10 @@
                 个人生活学习博客
             {% endblock %}
         </title>
+        <style type="text/css">@import url(/static/calendar-win2k-1.css);</style>
+        <script type="text/javascript" src="/static/calendar.js"></script>
+        <script type="text/javascript" src="/static/lang/calendar-en.js"></script>
+        <script type="text/javascript" src="/static/calendar-setup.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/2.3.0/css/bootstrap.min.css" rel="stylesheet"> 
         <style type="text/css">
@@ -57,10 +61,14 @@
                             </div>
                         </form>
                     {% endblock %}
-                        <iframe src="http://m.weather.com.cn/m/pn4/weather.htm?id=101010100T " width="160" height="20" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>  
+                        <div>
+                            <iframe allowtransparency="true" frameborder="0" width="140" height="278" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=1&t=0&v=1&d=3&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=140&h=278&align=center"></iframe>
+                        </div>
+                    <div id="calendar-container" style="float: right; margin-left: 1em; margin-bottom: 1em; display: block;"></div>
+                </div>
+                <div style="float: left; margin-left: 2em; margin-top: 1em; margin-bottom: 1em; border:10em">
                     微博链接</br>
-                    日历</br>
-                    今日天气</br>
+                    <a href="http://weibo.com/lpcpp" style="margin-left:2em">博主的微博</a>
                 </div>
             </div>
             <div id="footer" style="text-align:center">
@@ -68,13 +76,6 @@
                     <a href="/contact/">Contact us!</a>
             </div>
         </div>
-        <script type="text/javascript">
-            function () {
-                $('.nav li').removeClass('active');
-                $(this).addClass('active');
-                alert('aaa');
-            };
-        </script>
         <!--<script type="text/javascript">
             $(function() {
                 alert('aaa');
@@ -85,6 +86,17 @@
                 });
             });
         </script> --!>
+        <script type="text/javascript">
+            function dateChanged(calender){
+            };
+            
+            Calendar.setup(
+                {
+                    flat        : "calendar-container",
+                    flatCallback: dateChanged
+                }
+            );
+        </script>
         <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/jsbootstrap-combined.min.js"></script>
     </body>
