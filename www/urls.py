@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from blog.views import *
 from blog.verifycode import verify_code
+from blog.oAuth import oauth
 import settings
 
 #from django.contrib import admin
@@ -14,6 +15,8 @@ urlpatterns = patterns('',
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', log_in, name="login"),
     url(r'^logout/$', log_out, name="logout"),
+
+    url(r'^oauth/$', oauth, name="oauth"),
 
     url(r'^backyard/$', backyard, name="backyard"),
     url(r'^index/$', index),

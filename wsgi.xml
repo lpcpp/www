@@ -1,5 +1,5 @@
 <uwsgi>
-    <socket>127.0.0.1:9090</socket>
+    <socket>115.28.15.67:9090</socket>
     <chdir>/Users/luopeng/project/www/</chdir>
     <pythonpath>/Users/luopeng/project/www/www/</pythonpath>
     <module>wsgi</module>

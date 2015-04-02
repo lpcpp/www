@@ -160,7 +160,8 @@ def register_success(request):
     
 
 def log_in(request):
-    logger.debug('enter log_in')
+    logger.info('enter log_in')
+    logger.error('enter log_in')
     logger.debug('request.method' + request.method)
     errors = []
     if request.method == "POST":
@@ -215,6 +216,7 @@ def paginator(blogs, page, num=1):
 
 def backyard(request):
     logger.debug('enter backyard') 
+    logger.error('enter backyard') 
     if request.user.is_authenticated():
         logger.debug('backyard user is authenticated') 
         blogs = Blog.objects.all().order_by('-tm')
@@ -229,6 +231,7 @@ def backyard(request):
 
 def index(request):
     logger.debug('enter index')
+    logger.error('enter index')
     blogs = Blog.objects.all().order_by('-tm')
     logger.debug('blogs==%s', blogs)
     page = request.GET.get('page')

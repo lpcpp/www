@@ -3,6 +3,7 @@
     <head>
         <title>login page</title>
         <meta charset="utf-8">
+        <script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
     </head>
     <body>
         <form action='' method="post">{% csrf_token %}
@@ -20,5 +21,9 @@
                 <input type="reset" value="重置"/>
             </p>
         </form>
+        <div>
+             <a href="https://api.weibo.com/oauth2/authorize?client_id=381709949&response_type=code&redirect_uri=http://115.28.15.67/oauth"><input type="button">使用新浪微博登陆</input></a>
+        </div>
+
     </body>
 </html>

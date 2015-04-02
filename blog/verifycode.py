@@ -4,13 +4,18 @@ import string
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from django.http import HttpResponse
 from www.settings import VERIFY_CODE_TTF
+import logging
+
 try:
     import cStringIO as StringIO
 except ImportError:
     import StringIO
 
+logger = logging.getLogger('runlog')
+
 
 def create_verify_code():
+    logger.error('enter create verify code')
     print 'enter create_verify_code'
     chars = string.letters + string.digits
     size = (120, 30)

@@ -158,6 +158,7 @@ LOGGING = {
     'loggers':{
         'runlog':{
             'handlers':['default', 'server_log'],
+            'level': 'DEBUG',
             'propagate': False
         },
     },
