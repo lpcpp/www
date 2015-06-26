@@ -1,22 +1,20 @@
 from django.conf.urls import patterns, include, url
 from blog.views import *
 from blog.verifycode import verify_code
-from blog.oAuth import oauth
+from blog.oAuth import oauth, third_authenticated, request_token, access_token
 import settings
 
 #from django.contrib import admin
 #admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'www.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
-    #url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', log_in, name="login"),
     url(r'^logout/$', log_out, name="logout"),
 
-    url(r'^oauth/$', oauth, name="oauth"),
+    url(r'^oauth2/request_token/(.+)/$', request_token, name="request_token"),
+    url(r'^oauth2/access_token/(.+)/$', access_token, name="access_token"),
+
+    url(r'^oauth?', oauth),
 
     url(r'^backyard/$', backyard, name="backyard"),
     url(r'^index/$', index),
@@ -58,6 +56,7 @@ urlpatterns = patterns('',
     url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', activate),
 
     #url(r'^ckeditor/', include('ckeditor.urls')),
+    
 )
 
 urlpatterns += (

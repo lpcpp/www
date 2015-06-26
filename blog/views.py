@@ -15,8 +15,20 @@ from django.core.paginator import EmptyPage
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from www.settings import EMAIL_USER_TO, EMAIL_HOST_USER
+import oauth2 as oauth
+import cgi
+from blog.models import Profile
+
 
 logger = logging.getLogger('runlog')
+
+
+app_key = '123456789'
+app_secret = '987654321'
+consumer = oauth.Consumer(app_key, app_secret)
+client = oauth.Client(consumer)
+
+request_token_url = 'https://api.weibo.com/oauth2/authorize'
 
 
 def add_category(request):
@@ -190,7 +202,8 @@ def log_in(request):
             lf = LoginForm()
 
     lf = LoginForm()
-    return render_to_response('login.html', {'lf': lf}, context_instance=RequestContext(request))
+    url = "http://115.28.15.67:8888/oauth2/authorize?client_id=1234567890&response_type=code&redirect_uri=http://115.28.15.67/oauth2/request_token/"
+    return render_to_response('login.html', {'lf': lf, 'url': url}, context_instance=RequestContext(request))
 
                 
 
@@ -219,7 +232,8 @@ def backyard(request):
     logger.error('enter backyard') 
     if request.user.is_authenticated():
         logger.debug('backyard user is authenticated') 
-        blogs = Blog.objects.all().order_by('-tm')
+        print '88888888888user', request.user, type(request.user)
+        blogs = Blog.objects.filter(user=request.user).order_by('-tm')
         page = request.GET.get('page')
         blogs = paginator(blogs, page, num=10)
 
@@ -238,6 +252,10 @@ def index(request):
     blogs = paginator(blogs, page, num=10)
     logger.debug('request.user=%s', request.user)
     logger.debug('blogs==%s', blogs)
+    if request.GET.get('domain'):
+        user = authenticate(username=request.GET.get('domain'), password='test')
+        login(request, user)
+
     return render_to_response('index.html', {'blogs': blogs, 'request': request})
 
 def blog(request):
