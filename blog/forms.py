@@ -1,4 +1,4 @@
-#!-*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 from django import forms
 from models import Blog
 from django.forms import ModelForm
@@ -16,9 +16,8 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(label=u"请重复密码", widget=forms.PasswordInput())
     email = forms.EmailField()
     verify_code = forms.CharField(max_length=10)
-    
+
 
 class BlogForm(ModelForm):
     class Meta:
         model = Blog
-    

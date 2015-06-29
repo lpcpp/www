@@ -14,14 +14,14 @@ class Category(models.Model):
         return self.name
 
 
-#class User(models.Model):
+# class User(models.Model):
 #    username = models.CharField(max_length=50)
 #    password = models.CharField(max_length=50)
 #    email = models.EmailField()
 
 #    def __unicode__(self):
 #        return self.username
-        
+
 
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)

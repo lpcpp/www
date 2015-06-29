@@ -48,17 +48,17 @@ EMAIL_USER_TO = '517145673@qq.com'
 # Application definition
 
 INSTALLED_APPS = (
-    #'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'debug_toolbar',
+    # 'debug_toolbar',
     'blog',
     'gallery',
     'rest_framework',
-  #  'ckeditor',
+    # 'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +68,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'www.urls'
@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'www.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-#        'NAME': os.path.join(BASE_DIR, 'blogdb'),
+        # 'NAME': os.path.join(BASE_DIR, 'blogdb'),
         'NAME': 'blogdb',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
+        'HOST': '115.28.15.67',
         'PORT': '3306',
     }
 }
@@ -108,10 +108,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'gallery/media') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'gallery/media')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIR = (
     os.path.join(BASE_DIR, 'blog/static'),
@@ -120,44 +120,42 @@ STATICFILES_DIR = (
 
 VERIFY_CODE_TTF = BASE_DIR + '/static/fonts/LucidaSansRegular.ttf'
 
-#CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
-#CKEDITOR_MEDIA_PREFIX = BASE_DIR + '/static/ckeditor'
+# CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+# CKEDITOR_MEDIA_PREFIX = BASE_DIR + '/static/ckeditor'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
 TEMPLATE_DIRS = ('/Library/Python/2.7/site-packages/debug_toolbar/templates',
                  BASE_DIR + '/blog/templates',
                  BASE_DIR + '/gallery/templates',
-)
-
+                 )
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
-    'formatters':{
-        'standard':{
+    'formatters': {
+        'standard': {
             'format': '%(asctime)s[%(threadName)s:%(thread)d][%(name)s:%(lineno)d][%(levelname)s]-%(message)s'
         },
     },
-    'filters':{
-     },
-    'handlers':{
-         'default':{
-              'level': 'DEBUG',
-              'class': 'logging.StreamHandler',
-              'formatter': 'standard',
-          },
-         'server_log':{
-              'level': 'INFO',
-              'class': 'logging.handlers.RotatingFileHandler',
-              'filename': os.path.join(BASE_DIR + '/www/' +
-'logs/', 'log'),
-              'formatter': 'standard',
-          },
+    'filters': {
     },
-    'loggers':{
-        'runlog':{
-            'handlers':['default', 'server_log'],
+    'handlers': {
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+        'server_log': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR + '/www/' + 'logs/', 'log'),
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'runlog': {
+            'handlers': ['default', 'server_log'],
             'level': 'DEBUG',
             'propagate': False
         },

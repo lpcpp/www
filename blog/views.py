@@ -1,7 +1,7 @@
-#!-*-coding:utf-8-*-
-from forms import LoginForm, BlogForm, RegisterForm
+# -*- coding: utf-8 -*-
+from forms import LoginForm, RegisterForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from models import Blog, Category
@@ -16,8 +16,6 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from www.settings import EMAIL_USER_TO, EMAIL_HOST_USER
 import oauth2 as oauth
-import cgi
-from blog.models import Profile
 
 
 logger = logging.getLogger('runlog')
@@ -65,18 +63,16 @@ def modify_blog(request):
     logger.debug('enter modify blog')
 
 
-
-
 @login_required
 def add_blog_success(request):
     logger.debug('enter success')
     if request.method == "POST":
         logger.debug('request.POST:' + str(request.POST))
- 
+
         caption = request.POST['caption']
         content = request.POST['content']
         category = request.POST['category']
-        #logger.debug('category======%s', str(dir(category)))
+#        logger.debug('category======%s', str(dir(category)))
         c = Category.objects.get(name=category)
         b = Blog(caption=caption, content=content, category=c, user=request.user)
         b.save()
@@ -95,6 +91,7 @@ def validate_login(request, username, password):
                 logger.debug('after register')
         else:
             logger.error('此用户尚未激活')
+
 
 def register(request):
     logger.debug('enter register')
@@ -121,7 +118,7 @@ def register(request):
 #            user = User.objects.create_user(username, email, password1, is_active=False)
             user.is_active = False
             user.save()
-            salt  = hashlib.sha1(str(random.random())).hexdigest()[:5]
+            salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
             logger.debug('salt====%s', salt)
             activation_key = hashlib.sha1(salt + username).hexdigest()
             logger.debug('activation_key====%s', activation_key)
@@ -142,6 +139,7 @@ def activate_state(request):
     msg = "请进入邮箱认证"
     return render_to_response('register_feedback.html', {'msg': msg})
 
+
 def activate(request, username, activation_key):
     logger.debug('enter activate')
     logger.debug('username==%s', username)
@@ -156,7 +154,7 @@ def activate(request, username, activation_key):
         logger.debug('uuuuuu=%s', user.username)
         user.is_active = True
         user.save()
-        #request.user = user
+#        request.user = user
         logger.debug('request.user2222===%s', request.user)
         return HttpResponseRedirect('/register/success/')
 
@@ -166,10 +164,11 @@ def activate_error(request):
     msg = '该链接已失效，请重新注册'
     render_to_response('register_feedback.html', {'msg': msg})
 
+
 def register_success(request):
     msg = '激活成功'
     return render_to_response('register_feedback.html', {'msg': msg})
-    
+
 
 def log_in(request):
     logger.info('enter log_in')
@@ -205,8 +204,6 @@ def log_in(request):
     url = "http://115.28.15.67:8888/oauth2/authorize?client_id=1234567890&response_type=code&redirect_uri=http://115.28.15.67/oauth2/request_token/"
     return render_to_response('login.html', {'lf': lf, 'url': url}, context_instance=RequestContext(request))
 
-                
-
 
 def log_out(request):
     logout(request)
@@ -214,7 +211,7 @@ def log_out(request):
 
 
 def paginator(blogs, page, num=1):
-    logger.debug('page=%s, blogs=%s',page, blogs)
+    logger.debug('page=%s, blogs=%s', page, blogs)
     paginator = Paginator(blogs, num)
     try:
         blogs = paginator.page(page)
@@ -228,10 +225,10 @@ def paginator(blogs, page, num=1):
 
 
 def backyard(request):
-    logger.debug('enter backyard') 
-    logger.error('enter backyard') 
+    logger.debug('enter backyard')
+    logger.error('enter backyard')
     if request.user.is_authenticated():
-        logger.debug('backyard user is authenticated') 
+        logger.debug('backyard user is authenticated')
         print '88888888888user', request.user, type(request.user)
         blogs = Blog.objects.filter(user=request.user).order_by('-tm')
         page = request.GET.get('page')
@@ -257,6 +254,7 @@ def index(request):
         login(request, user)
 
     return render_to_response('index.html', {'blogs': blogs, 'request': request})
+
 
 def blog(request):
     logger.debug('enter blog')
@@ -332,9 +330,9 @@ def search(request):
     if 'q' in request.GET:
         q = request.GET['q']
         if not q:
-            q = 'theweatherisgood' 
+            q = 'theweatherisgood'
             blogs = []
-            return render_to_response('index.html', {'blogs': blogs, 'query':q, 'request': request})
+            return render_to_response('index.html', {'blogs': blogs, 'query': q, 'request': request})
 
         else:
             q = request.GET.get('q')
@@ -352,7 +350,7 @@ def search(request):
             logger.debug('bxxxxxxe=%s', blogs)
             blogs = paginator(blogs, page, num=10)
             logger.debug('bbbbbbe=%s', blogs)
-    return render_to_response('index.html', {'blogs': blogs, 'query':q, 'len': length, 'request': request})
+    return render_to_response('index.html', {'blogs': blogs, 'query': q, 'len': length, 'request': request})
 
 
 def contact(request):
@@ -363,7 +361,7 @@ def contact(request):
         logger.info('sender=%s', sender)
         send_mail(subject, message, EMAIL_HOST_USER, [EMAIL_USER_TO], fail_silently=True)
         return HttpResponseRedirect('/contact/send_mail_success/')
-         
+
     return render_to_response('contact.html', {'request': request}, context_instance=RequestContext(request))
 
 
