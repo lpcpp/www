@@ -22,6 +22,8 @@ SECRET_KEY = '^@+%p3=d*0fiwxo+i5sw+orqmfqm!*ubj&jwjt%9s((qd651%x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DOMAIN = 'http://192.168.1.189:8080'
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -126,8 +128,7 @@ VERIFY_CODE_TTF = BASE_DIR + '/static/fonts/LucidaSansRegular.ttf'
 INTERNAL_IPS = ('127.0.0.1',)
 
 TEMPLATE_DIRS = ('/Library/Python/2.7/site-packages/debug_toolbar/templates',
-                 BASE_DIR + '/blog/templates',
-                 BASE_DIR + '/gallery/templates',
+                 BASE_DIR + '/templates',
                  )
 
 LOGGING = {

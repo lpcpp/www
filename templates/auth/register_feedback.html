@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>register</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <p>
+    		{{ msg }} <br>
+			将在 <span id="time">5</span> 秒钟后自动跳转至主页，如果未能跳转，<a href="/">请点击</a>
+        </p>
+		<script type="text/javascript">
+            delayURL();
+			function delayURL(){
+			    var delay = document.getElementById("time").innerHTML;
+				var t = setTimeout("delayURL()", 1000);
+				if (delay > 0){
+				    delay--;
+					document.getElementById("time").innerHTML = delay;
+				}else{
+				    clearTimeout(t);
+					window.location.href="/";
+				}
+			}
+        </script>
+    </body>
+</html>

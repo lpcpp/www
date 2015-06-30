@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from blog import views
 from blog.verifycode import verify_code
 from blog.oAuth import oauth, request_token, access_token
+import auth.views
 import settings
 
 # from django.contrib import admin
@@ -10,8 +11,8 @@ import settings
 urlpatterns = patterns(
     '',
 
-    url(r'^login/$', views.log_in, name="login"),
-    url(r'^logout/$', views.log_out, name="logout"),
+    url(r'^login/$', auth.views.log_in, name="login"),
+    url(r'^logout/$', auth.views.log_out, name="logout"),
 
     url(r'^oauth2/request_token/(.+)/$', request_token, name="request_token"),
     url(r'^oauth2/access_token/(.+)/$', access_token, name="access_token"),
@@ -51,11 +52,11 @@ urlpatterns = patterns(
     url(r'^contact/send_mail_success/$', views.send_mail_success),
 
     url(r'^verify_code/$', verify_code),
-    url(r'^register/$', views.register),
-    url(r'^register/success/$', views.register_success),
-    url(r'^register/activation_error/$', views.activate_error),
-    url(r'^register/activation/$', views.activate_state),
-    url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', views.activate),
+    url(r'^register/$', auth.views.register),
+    url(r'^register/success/$', auth.views.register_success),
+    url(r'^register/activation_error/$', auth.views.activate_error),
+    url(r'^register/activation/$', auth.views.activate_state),
+    url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', auth.views.activate),
 
     # url(r'^ckeditor/', include('ckeditor.urls')),
 )
