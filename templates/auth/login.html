@@ -2,25 +2,93 @@
 <html>
     <head>
         <title>login page</title>
-        <meta charset="utf-8">
+		<meta http-equiv="Content-Type" contetn="text/html; charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+		<meta name="viewport" content="width=device-width", initial-scale=1, maximum-scale=1">
         <script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
+		<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap-theme.min.css" ref="stylesheet">
+		<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost/static/css/jx.main.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		<style type="text/css">
+            * {
+				margin: 0;
+				padding: 0
+			}
+			body {
+			    background: #444 url(http://sandbox.runjs.cn/uploads/rs/418/nkls38xx/carbon_fibre_big.png);font-family:"宋体";}
+			}
+			.loginBox {
+			    width: 420px;
+				height: 280px;
+				padding: 0 20px;
+				border: 1px solid #fff;
+                color: #000;
+				margin-top: 40px;
+				border-radius: 8px;
+				background: white;
+				box-shadow: 0 0 15px #222;
+				background: -moz-linear-gradient(top, #fff, #efefef %8);
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -210px;
+				margin-top: -165px;
+			}
+			.loginBox h2 {
+			    height:45px;
+				font-size:20px;
+				font-weight:normal;
+			}
+			.loginBox .left {
+			    border-right: 1px solid #ccc;
+				height:100%;
+				padding-right: 20px;
+			}
+        </style>
     </head>
     <body>
-        <form action='' method="post">{% csrf_token %}
-            {% if errors %}
-                {% for error in errors %}
-                     {{ error }}
-                {% endfor %}
-            {% endif %}
-            {{ lf.as_p }}
-            <p>
-                <img src="/verify_code/" />
-            </p>
-            <p>
-                <input type="submit" value="登录"/>
-                <input type="reset" value="重置"/>
-            </p>
-        </form>
+	    <div class="container">
+			<div class="loginBox row">
+				<h2 class="text-center">登录</h2>
+                <form id="login" action='' method="post" class="form-horizontal">{% csrf_token %}
+					<div class="form-group has-success">
+						<lable for="username" class="col-sm-2 col-md-2 control-label">用户名</label>
+					    <div class="col-sm-10 col-md-10">
+							<input type="text" class="form-control" name="username" placeholder="用户名" value="">
+						</div>
+					<div class="form-group has-success">
+						<label for="password" class="col-sm-2 col-md-2 control-label">密码</label>
+						<div class="col-sm-10 col-md-10">
+							<input type="password" class="form-control" name="password" placeholder="密码">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+						    <div class="col-sm-10 col-md-10">
+						      	<input type="text" class="form-control" name="verify_code" placeholder="验证码">
+							</div>
+						</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+    			            <div class="col-sm-10 col-md-10">
+                                <img src="/verify_code/"/ class="form-control">
+	    					</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10" style="color: #990033;"></div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10 col-md-10">
+							<input type="hidden" name="url" value="/admin"/>
+							<button class="btn btn-info" data-loading-text="正在登录..." type="submit">登录</button>
+							<button class="btn btn-info" type="reset">清空</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
         <div>
              <a href="https://api.weibo.com/oauth2/authorize?client_id=381709949&response_type=code&redirect_uri=http://115.28.15.67/oauth"><input type="button">使用新浪微博登陆</input></a>
              <a href={{ url }}><input type="button">use wenjuan account</input></a>
