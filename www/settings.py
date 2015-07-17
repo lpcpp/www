@@ -150,7 +150,7 @@ LOGGING = {
         'server_log': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR + '/www/' + 'logs/', 'log'),
+            'filename': os.path.join(BASE_DIR + '/logs/', 'log.txt'),
             'formatter': 'standard',
         },
     },
