@@ -113,11 +113,9 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'gallery/media')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIR = (
-    os.path.join(BASE_DIR, 'blog/static'),
-    os.path.join(BASE_DIR, 'gallery/static'),
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
 )
 
 VERIFY_CODE_TTF = BASE_DIR + '/static/fonts/LucidaSansRegular.ttf'
@@ -136,7 +134,7 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format': '%(asctime)s[%(threadName)s:%(thread)d][%(name)s:%(lineno)d][%(levelname)s]-%(message)s'
+            'format': '%(asctime)s[%(filename)s:%(threadName)s:%(thread)d][%(name)s:%(lineno)d][%(levelname)s]-%(message)s'
         },
     },
     'filters': {
