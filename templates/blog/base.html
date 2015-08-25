@@ -5,8 +5,7 @@
         <title>
             {% block title %}
                 罗鹏的python博客
-            {% endblock %}
-        </title>
+            {% endblock %} </title>
         <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style type="text/css">
@@ -24,6 +23,15 @@
 		   a {
 		       text-decoration: none;
 		   }
+           div#loginForm {
+               border: 1px solid;
+               position: absolute;
+               top:175px;
+               left: 400px;
+               width: 493px;
+               height: 400px;
+               z-index:200;
+           }
 
         </style>
     </head>
@@ -35,7 +43,7 @@
                     &nbsp <a href="/backyard">后台</a>
                     &nbsp <a href="/logout/">登出</a>
                 {% else %}
-                    <a class="theme-login" href="javascript:;">登录</a>
+                    <a id="theme-login" href="javascript:;">登录</a>
                     <a href="/register/">注册</a>
                 {% endif %}
             </div>
@@ -45,6 +53,9 @@
                     <span><a href="/videoplay/">VIDEO</a></span>
                     <span><a href="/gallery/album_list/">ALBUM</a></span>
                     <span><a href="/about/">ABOUT</a></span>
+            </div>
+            <div id="loginForm" style="display:none;">
+                <p>999</p>
             </div>
             <div class="content">
                 <div class="main">
@@ -70,4 +81,10 @@
             </div>
         </div>
     </body>
+    <script>
+        $("#theme-login").click(function(){
+            $("#loginForm").show();
+        
+        });
+    </script>
 </html>
