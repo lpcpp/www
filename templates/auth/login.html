@@ -2,55 +2,13 @@
 <html>
     <head>
         <title>login page</title>
-		<meta http-equiv="Content-Type" contetn="text/html; charset=UTF-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-		<meta name="viewport" content="width=device-width", initial-scale=1, maximum-scale=1">
-        <script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
-		<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap-theme.min.css" ref="stylesheet">
-		<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-		<link href="http://localhost/static/css/jx.main.css" rel="stylesheet">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-		<style type="text/css">
-            * {
-				margin: 0;
-				padding: 0
-			}
-			body {
-			    background: #444 url(http://sandbox.runjs.cn/uploads/rs/418/nkls38xx/carbon_fibre_big.png);font-family:"宋体";}
-			}
-			.loginBox {
-			    width: 420px;
-				height: 280px;
-				padding: 0 20px;
-				border: 1px solid #fff;
-                color: #000;
-				margin-top: 40px;
-				border-radius: 8px;
-				background: white;
-				box-shadow: 0 0 15px #222;
-				background: -moz-linear-gradient(top, #fff, #efefef %8);
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				margin-left: -210px;
-				margin-top: -165px;
-			}
-			.loginBox h2 {
-			    height:45px;
-				font-size:20px;
-				font-weight:normal;
-			}
-			.loginBox .left {
-			    border-right: 1px solid #ccc;
-				height:100%;
-				padding-right: 20px;
-			}
-        </style>
+        <meta charset="utf-8">
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     </head>
     <body>
-	    <div class="container">
-			<div class="loginBox row">
-				<h2 class="text-center">登录</h2>
+	<div class="container">
+		<div class="loginBox">
+			<h2 class="text-center">登录</h2>
                 <form id="login" action='' method="post" class="form-horizontal">{% csrf_token %}
 					<div class="form-group has-success">
 						<lable for="username" class="col-sm-2 col-md-2 control-label">用户名</label>

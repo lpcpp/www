@@ -59,6 +59,8 @@ urlpatterns = patterns(
     url(r'register/activate/(?P<username>\w+)/(?P<activation_key>\w+)/$', auth.views.activate),
 
     # url(r'^ckeditor/', include('ckeditor.urls')),
+
+    url(r'^test/$', views.test),
 )
 
 urlpatterns += (

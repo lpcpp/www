@@ -230,3 +230,7 @@ def contact(request):
 
 def send_mail_success(request):
     return render_to_response('blog/send_mail_success.html')
+
+
+def test(request):
+    return render_to_response('blog/test.html')

@@ -4,207 +4,70 @@
         <meta charset="UTF-8"/>
         <title>
             {% block title %}
-                个人生活学习博客
+                罗鹏的python博客
             {% endblock %}
         </title>
         <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <style type="text/css">@import url(/static/calendar-win2k-1.css);</style>
-        <script type="text/javascript" src="/static/calendar.js"></script>
-        <script type="text/javascript" src="/static/lang/calendar-en.js"></script>
-        <script type="text/javascript" src="/static/calendar-setup.js"></script>
-        <script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/2.3.0/css/bootstrap.min.css" rel="stylesheet"> 
         <style type="text/css">
            body {
-               background-color: #ccc;
+			   background-image: url(/static/images/1.jpg);
+               background-size: 1366px 750px;
+			   background-attachment:fixed
            }
            .container {
-               background-color: white;
-               padding: 10px;
+		       width: 70%;
            }
-           .container-fluid {
-               background-color: white;
-           }
-		   .theme-popover {
-			   z-index: 9999;
-			   position: fixed;
-			   top: 50%;
-			   left: 50%;
-			   width: 660px;
-			   height: 360px;
-			   margin: -180px 0 0 -330px;
-			   border-radius: 50x;
-			   border: solid 2px #666;
-			   background-color: #fff;
-			   display:none
+		   .sidebar {
+		       width: 30%;
 		   }
-		   .theme-popit {
-			   border-bottom: 10x solid #ddd;
-			   padding: 12px;
-			   position: relative;
+		   a {
+		       text-decoration: none;
 		   }
-		   .theme-popbod {
-			   padding: 60px 15px;
-			   background-color: #f6f6f6;
-			   border-top: 1px solid #ddd;
-			   border-raidus: 0 0 5px 5px;
-			   color: # 666
-		   }
-		   .theme-popbom a {
-			   margin-left: 8px
-		   }
-		   .theme-popit .close{
-			   float: right;
-			   color: #999;
-			   padding: 5px;
-			   margin: -2px -5px -5px;
-			   font: bold 14px/14px simsun;
-			   text-shadow: 0 1px 0 #ddd
-		   }
-		   .theme-popit .close: hover{
-			   color: #444
-		   }
-		   .dform {
-		      padding: 80px 60px 40px; 
-		   }
-		   .dform-login {
-			   padding: 0;
-			   height: 270px;
-			   overflow: hidden
-		   }
-		   .theme-signin {
-			   margin: -50px -20px -50px 90px;
-			   text-align: left;
-			   font-size: 14px;
-		   }
-		   .theme-signin li {
-		      padding-left: 80px;
-			  margin-bottom: 14px;
-			  list-style: none;
-		   }
-		   .theme-sign li strong {
-		      float: left; 
-			  margin-left: -80px;
-			  width: 80px;
-			  text-align: right;
-			  line-height: 32px;
-		   }
-		   .theme-sign li input {
-		       text-align: right;
-		   }
-		   .ipt {
-		      border: solid 1px #d2d2d2;
-			  border-left-color: #ccc;
-			  border-top-color; #ccc;
-			  border-radius: 2px;
-			  box-shadow: inset 0 1px 0 #f8f8f8;
-			  background-color: #fff;
-			  padding: 4px 6px;
-			  height: 21px;
-			  line-height: 21px;
-			  color: #555;
-			  width: 180px;
-			  vertical-align: baseline;
-		   }
+
         </style>
-		<script>
-            jQuery(document).ready(function($){
-					    $('.theme-login').click(function(){
-								$('.theme-popover').slideDown(200);
-							})
-						$('.theme-popit .close').click(function(){
-								$('.theme-popover').slideUp(200);
-							})
-					})
-        </script>
     </head>
     <body>
         <div class="container">
-            <h5>
+            <div class="admin">
                 {% if request.user.is_authenticated %}
                     欢迎您,{{ request.user }}
                     &nbsp <a href="/backyard">后台</a>
                     &nbsp <a href="/logout/">登出</a>
                 {% else %}
-                    <a class="theme-login" href="javascript:;">登陆</a>
+                    <a class="theme-login" href="javascript:;">登录</a>
+                    <a href="/register/">注册</a>
                 {% endif %}
-                博客测试，欢迎标题 
-            </h5>
-            <div >
-                <ul class="nav nav-pills">
-                    <li class="active"> <a href="/index/">首页&nbsp;&nbsp;</a></span>
-                    <li><a href="/blog/">博客&nbsp;&nbsp;</a></span></li>
-                    <li><a href="/videoplay/">视频&nbsp;&nbsp;</a></span></li>
-                    <li><a href="/gallery/album_list/">相册&nbsp;&nbsp;</a></span></li>
-                    <li><a href="/map/">地图&nbsp;&nbsp;</a></span></li>
-                    <li><a href="/about/">关于博主&nbsp;&nbsp;</a></span></li>
-                </ul>
             </div>
-            <div id="content" class="row-fluid">
-                <div class="span9 main">
+            <div class="navigator" >
+                    <span class="active"> <a href="/index/">HOME</a></span>
+                    <span><a href="/blog/">ARCHIVE</a></span>
+                    <span><a href="/videoplay/">VIDEO</a></span>
+                    <span><a href="/gallery/album_list/">ALBUM</a></span>
+                    <span><a href="/about/">ABOUT</a></span>
+            </div>
+            <div class="content">
+                <div class="main">
                     {% block content %}{% endblock %} 
                 </div>
-                <div class="span3 sidebar">
-                    {% block sidebar %}
-                        <form class="form-search" action="/blog/search/" method="GET">
-                            <div class="input-append">
-                                <input type="text" class="span8 search-query" name="q" />
-                                <button type="submit" class="btn">Search</button>
-                            </div>
-                        </form>
-                    {% endblock %}
-                        <div>
-                            <iframe allowtransparency="true" frameborder="0" width="140" height="278" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=1&t=0&v=1&d=3&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=140&h=278&align=center"></iframe>
-                        </div>
-                    <div id="calendar-container" style="float: right; margin-left: 1em; margin-bottom: 1em; display: block;"></div>
-                </div>
-                <div style="float: left; margin-left: 2em; margin-top: 1em; margin-bottom: 1em; border:10em">
-                    微博链接</br>
-                    <a href="http://weibo.com/lpcpp" style="margin-left:2em">博主的微博</a>
-                </div>
-            </div>
-            <div id="footer" style="text-align:center">
-                    All right reserved &nbsp&nbsp
-                    <a href="/contact/">Contact us!</a>
+			<div class="sidebar">
+				{% block sidebar %}
+					<form class="form-search" action="/blog/search/" method="GET">
+						<div class="input-append">
+							<input type="text" class="span8 search-query" name="q" />
+							<button type="submit" class="btn">Search</button>
+						</div>
+					</form>
+				{% endblock %}
+			</div>
+            <div class="footer" style="text-align:center">
+			    <span>
+                    All rights reserved
+				</span>
+				<span>
+                    <a href="/contact/">Contact</a>
+				</span>
             </div>
         </div>
-        <!--<script type="text/javascript">
-            $(function() {
-                alert('aaa');
-                $('.nav li').click(function() {
-                alert('aaa');
-                $('.nav li').removeClass('active');
-                $(this).addClass('active');
-                });
-            });
-        </script> --!>
-		<div class="theme-popover">
-			<div class="theme-popit">
-				<a href="javascript:;" title="关闭" class="close">x</a>
-				<h3>登录</h3>
-			</div>
-			<div class="theme-popbod dform">{% csrf_token %}
-				<form class="theme-signin" name="loginform" action="/login/" method="post">
-					<ol>
-						<li><strong>用户名:</strong><input class="ipt" type="text" name="log" size="20" /></li>
-						<li><strong>密码:</strong><input class="ipt" type="password" name="pwd" size="20" /></li>
-						<li><input class="btn btn-primary" type="submit" name="submit" vaue="登录" /></li>
-					</ol>
-				</form>
-			</div>
-		</div>
-        <script type="text/javascript">
-            function dateChanged(calender){
-            };
-            
-            Calendar.setup(
-                {
-                    flat        : "calendar-container",
-                    flatCallback: dateChanged
-                }
-            );
-        </script>
-        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/jsbootstrap-combined.min.js"></script>
     </body>
 </html>

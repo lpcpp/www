@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from forms import LoginForm, RegisterForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 import logging
@@ -14,7 +14,7 @@ from www.settings import EMAIL_HOST_USER
 from www.settings import DOMAIN
 
 
-logger = logging.getLogger('auth')
+logger = logging.getLogger('runlog')
 
 
 def validate_login(request, username, password):
@@ -30,25 +30,25 @@ def validate_login(request, username, password):
 
 def register(request):
     logger.debug('enter register')
-    errors = []
     if request.method == "POST":
+        logger.debug('enter register post')
+        logger.debug('register.request.Post==%s', request.POST)
         rf = RegisterForm(request.POST)
+        logger.debug('RegisterForm.is_valid()==%s', rf.is_valid())
         if rf.is_valid():
             logger.debug('session_verify_code===%s', str(request.session['verifycode']))
             if str(rf.cleaned_data['verify_code']).lower() != str(request.session['verifycode']).lower():
-                errors.append("验证码错误")
-                return render_to_response('auth/register.html', {'errors': errors, 'rf': rf}, context_instance=RequestContext(request))
+                logger.debug('verify code mistake')
+                return HttpResponse('{"status": "fail", "err_code": "20001"}')
 
             username = rf.cleaned_data["username"]
             if User.objects.filter(username=username):
-                errors.append("用户名已存在")
-                return render_to_response('auth/register.html', {'errors': errors, 'rf': rf}, context_instance=RequestContext(request))
+				return HttpResponse('{"status": "fail", "err_code": "20002"}')
 
             password1 = rf.cleaned_data["password1"]
             password2 = rf.cleaned_data["password2"]
             if password1 != password2:
-                errors.append("两次输入的密码不一致")
-                return render_to_response('auth/register.html', {'errors': errors, 'rf': rf}, context_instance=RequestContext(request))
+				return HttpResponse('{"status": "fail", "err_code": "20003"}')
 
             email = rf.cleaned_data['email']
             user = User.objects.create_user(username, email, password1)
@@ -61,10 +61,9 @@ def register(request):
             message = DOMAIN + '/register/activate/' + username + '/' + activation_key + '/'
             request.session['activation_key'] = activation_key
             send_mail(subject, message, EMAIL_HOST_USER, [rf.cleaned_data['email']], fail_silently=True)
-            return HttpResponseRedirect('/register/activation/')
+            return HttpResponse('{"status": "success"}')
 
-    rf = RegisterForm()
-    return render_to_response('auth/register.html', {'errors': errors, 'rf': rf}, context_instance=RequestContext(request))
+    return render_to_response('auth/register.html', context_instance=RequestContext(request))
 
 
 def activate_state(request):

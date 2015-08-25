@@ -15,8 +15,7 @@ logger = logging.getLogger('runlog')
 
 
 def create_verify_code():
-    logger.error('enter create verify code')
-    print 'enter create_verify_code'
+    logger.debug('enter create verify code')
     chars = string.letters + string.digits
     size = (120, 30)
     # img_type = "GIF"
