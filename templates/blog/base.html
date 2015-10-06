@@ -127,7 +127,13 @@
 						 "verify_code": verify_code,
 					},
 					success: function(result){
-					    alert(result);
+					    var obj = jQuery.parseJSON(result);
+                            if (obj.status == "success"){
+                                location.href = "/";
+                            }
+                            if (obj.status == "fail"){
+							    alert(result);
+                            }
 					},
 					error: function(data){
 					    alert("error:"+data.respondeText);

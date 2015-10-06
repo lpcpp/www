@@ -8,6 +8,7 @@ import logging
 import hashlib
 import time
 import random
+import json
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from www.settings import EMAIL_HOST_USER
@@ -152,16 +153,16 @@ def js_login(request):
         logger.debug('777')
         logger.debug('%s:' % enums.ERROR_VERIFY_CODE)
         result = {"status": "fail", "err_code": enums.ERROR_VERIFY_CODE}
-        logger.debug(result)
-        return HttpResponde(str(result))
+        return HttpResponse(json.dumps(result))
 
     user = authenticate(username=username, password=password)
     if user is not None:
         if not user.is_active:
             result = {"status": "fail", "err_code": enums.USER_IS_NOT_ACTIVATED}
         else:
+            login(request, user)
             result = {"status": "success"}
     else:
         result = {"status": "fail", "err_code": enums.USERNAME_DO_NOT_MATCH_PASSWORD}
 	    
-    return HttpResponse(result)
+    return HttpResponse(json.dumps(result))
