@@ -1,4 +1,4 @@
-{% extends "backend.html" %}
+{% extends "blog/backend.html" %}
 		{% block title %}新建博文类型{% endblock %}
         {% block content %}
 		<form action="../add_category_success/" method="post"> {% csrf_token %}

@@ -22,7 +22,7 @@ SECRET_KEY = '^@+%p3=d*0fiwxo+i5sw+orqmfqm!*ubj&jwjt%9s((qd651%x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-DOMAIN = 'http://192.168.1.189:8080'
+DOMAIN = 'http://127.0.0.1:8000'
 
 TEMPLATE_DEBUG = True
 
