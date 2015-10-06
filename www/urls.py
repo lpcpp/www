@@ -12,6 +12,7 @@ urlpatterns = patterns(
     '',
 
     url(r'^login/$', auth.views.log_in, name="login"),
+    url(r'^jslogin/$', auth.views.js_login, name="js_login"),
     url(r'^logout/$', auth.views.log_out, name="logout"),
 
     url(r'^oauth2/request_token/(.+)/$', request_token, name="request_token"),

@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from www.settings import EMAIL_HOST_USER
 from www.settings import DOMAIN
+from www import enums
 
 
 logger = logging.getLogger('runlog')
@@ -136,3 +137,31 @@ def log_in(request):
 def log_out(request):
     logout(request)
     return HttpResponseRedirect('/login/')
+
+
+def js_login(request):
+    username = request.POST["username"]
+    logger.debug(username)
+    password = request.POST["password"]
+    logger.debug(password)
+    verify_code = request.POST["verify_code"]
+    logger.debug(verify_code)
+    logger.debug(verify_code.lower())
+
+    if verify_code.lower() != str(request.session['verifycode']).lower():
+        logger.debug('777')
+        logger.debug('%s:' % enums.ERROR_VERIFY_CODE)
+        result = {"status": "fail", "err_code": enums.ERROR_VERIFY_CODE}
+        logger.debug(result)
+        return HttpResponde(str(result))
+
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if not user.is_active:
+            result = {"status": "fail", "err_code": enums.USER_IS_NOT_ACTIVATED}
+        else:
+            result = {"status": "success"}
+    else:
+        result = {"status": "fail", "err_code": enums.USERNAME_DO_NOT_MATCH_PASSWORD}
+	    
+    return HttpResponse(result)

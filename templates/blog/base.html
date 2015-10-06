@@ -4,9 +4,10 @@
         <meta charset="UTF-8"/>
         <title>
             {% block title %}
-                罗鹏的python博客
+                python了没?
             {% endblock %} </title>
         <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style type="text/css">
            body {
@@ -26,13 +27,16 @@
            div#loginForm {
                border: 1px solid;
                position: absolute;
-               top:175px;
+               top: 175px;
                left: 400px;
-               width: 493px;
+               width: 478px;
                height: 400px;
-               z-index:200;
+               z-index: 200;
+			   display: none; 
            }
-
+		   div#header {
+		       text-align: center
+		   }
         </style>
     </head>
     <body>
@@ -43,7 +47,7 @@
                     &nbsp <a href="/backyard">后台</a>
                     &nbsp <a href="/logout/">登出</a>
                 {% else %}
-                    <a id="theme-login" href="javascript:;">登录</a>
+                    <a id="login" href="javascript:;">登录</a>
                     <a href="/register/">注册</a>
                 {% endif %}
             </div>
@@ -54,8 +58,26 @@
                     <span><a href="/gallery/album_list/">ALBUM</a></span>
                     <span><a href="/about/">ABOUT</a></span>
             </div>
-            <div id="loginForm" style="display:none;">
-                <p>999</p>
+            <div id="loginForm">
+			    <h2 id="header">登录</h2>
+				<div>
+					<a id="close" href="javascript:;">x</a>
+				</div>
+				<div>
+					<lable for="username">用户名</label>
+					<input type="text" name="username" placeholder="用户名" value="">
+				</div>
+				<div>
+					<label for="password">密码</label>
+					<input type="password" name="password" placeholder="密码">
+				</div>
+				<div>
+					<input type="text" name="verify_code" placeholder="验证码">
+					<img src="/verify_code/">
+				</div>
+				<div>
+					<button id="submit">登陆</button>
+				</div>
             </div>
             <div class="content">
                 <div class="main">
@@ -81,10 +103,50 @@
             </div>
         </div>
     </body>
-    <script>
-        $("#theme-login").click(function(){
-            $("#loginForm").show();
-        
-        });
-    </script>
+	<script>
+		$(document).ready(function(){
+			$("#login").click(function(){
+				$("#loginForm").show();
+			});
+
+			$("#close").click(function(){
+				$("#loginForm").hide();
+			});
+
+			$("#submit").click(function(){
+    			var username = document.getElementsByName("username")[0].value;
+    			var password = document.getElementsByName("password")[0].value;
+    			var verify_code = document.getElementsByName("verify_code")[0].value;
+
+				$.ajax({
+			        type: "POST",
+					url: "/jslogin/",
+					data: {
+				         "username": username,
+						 "password": password,
+						 "verify_code": verify_code,
+					},
+					success: function(result){
+					    alert(result);
+					},
+					error: function(data){
+					    alert("error:"+data.respondeText);
+					}
+				});
+			});
+		});
+
+		function csrfSafeMethod(method) {
+		    // these HTTP methods do not require CSRF protection
+		    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+			}
+			$.ajaxSetup({
+			    beforeSend: function(xhr, settings) {
+			        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				        var csrftoken = $.cookie('csrftoken');
+			            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			        }
+			    }
+			});
+	</script>
 </html>

@@ -119,7 +119,9 @@ def index(request):
         user = authenticate(username=request.GET.get('domain'), password='test')
         login(request, user)
 
-    return render_to_response('blog/index.html', {'blogs': blogs, 'request': request})
+    x = RequestContext(request)
+    logger.debug('context_instance===%s', x)
+    return render_to_response('blog/index.html', {'blogs': blogs, 'request': request}, context_instance=RequestContext(request))
 
 
 def blog(request):

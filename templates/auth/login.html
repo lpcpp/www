@@ -9,6 +9,9 @@
 	<div class="container">
 		<div class="loginBox">
 			<h2 class="text-center">登录</h2>
+                {% for error in errors %}
+				    {{ error }}
+				{% endfor %}
                 <form id="login" action='' method="post" class="form-horizontal">{% csrf_token %}
 					<div class="form-group has-success">
 						<lable for="username" class="col-sm-2 col-md-2 control-label">用户名</label>
