@@ -188,7 +188,7 @@ def category_detail(request, id):
 
 
 def play_video(request):
-    return render_to_response('blog/video.html', {'request': request})
+    return render_to_response('gallery/video.html', {'request': request})
 
 
 def search(request):

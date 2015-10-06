@@ -31,26 +31,26 @@ def create_album(request):
             for album in albums:
                 if name in album.name:
                     error = 'album already exist, please choose another name'
-                    return render_to_response('create_album.html', {'error': error}, context_instance=RequestContext(request))
+                    return render_to_response('gallery/create_album.html', {'error': error}, context_instance=RequestContext(request))
             al = Album(name=name, front_cover='', path=path, owner=request.user)
             al.save()
             logger.debug('create_album success')
             return HttpResponseRedirect('/gallery/create_album_success/')
 
-        return render_to_response('create_album.html', {'request': request}, context_instance=RequestContext(request))
+        return render_to_response('gallery/create_album.html', {'request': request}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
 
 def create_album_success(request):
     logger.debug('enter create_album_success')
-    return render_to_response('create_album_success.html', {'request': request})
+    return render_to_response('gallery/create_album_success.html', {'request': request})
 
 
 def album_list(request):
     logger.debug('rrrrrrrrrrrrequset.user==%s', request.user)
     if not request.user.is_authenticated():
-        return render_to_response("no_album.html")
+        return render_to_response("gallery/no_album.html")
     albums = Album.objects.filter(owner=request.user)
     logger.debug('albums:%s', albums) 
     # 如果相册下有图片,使用第一张作为封面，否则使用默认的照片作为封面
@@ -63,7 +63,7 @@ def album_list(request):
 
         logger.debug('front_cover8888===%s', album.front_cover)
 
-    return render_to_response('album_list.html', {'albums': albums, 'request': request})
+    return render_to_response('gallery/album_list.html', {'albums': albums, 'request': request})
 
 
 def album_detail(request, album_name):
@@ -77,7 +77,7 @@ def album_detail(request, album_name):
 
     logger.debug('photos====%s', photos)
     
-    return render_to_response('album_detail.html', {'album': album, 'photos': photos, 'request': request})
+    return render_to_response('gallery/album_detail.html', {'album': album, 'photos': photos, 'request': request})
 
     
 
@@ -127,7 +127,7 @@ def upload_photo(request):
                 photos = Photo.objects.filter(name=name)
                 if photos:
                     error = 'this photo name has already exist, please use another one'
-                    return render_to_response('upload_photo.html', {'pf': pf, 'error': error}, context_instance=RequestContext(request))
+                    return render_to_response('gallery/upload_photo.html', {'pf': pf, 'error': error}, context_instance=RequestContext(request))
                 album = pf.cleaned_data['album']
                 fn = request.FILES['img'].name
                 url = handle_upload_photo(request.FILES['img'], str(album), fn)
@@ -141,13 +141,13 @@ def upload_photo(request):
         else:
             pf = PhotoForm()
             albums = Album.objects.all()
-        return render_to_response('upload_photo.html', {'pf': pf, 'request': request}, context_instance=RequestContext(request))
+        return render_to_response('gallery/upload_photo.html', {'pf': pf, 'request': request}, context_instance=RequestContext(request))
 
     return HttpResponseRedirect('/login/')
 
 
 def upload_photo_success(request):
-    return render_to_response('upload_photo_success.html', {'request': request})
+    return render_to_response('gallery/upload_photo_success.html', {'request': request})
 
 
 def photo_detail(request, album_name, photo_name):
@@ -156,7 +156,7 @@ def photo_detail(request, album_name, photo_name):
     logger.debug('album_name==%s', album_name)
     photo = Photo.objects.get(name=photo_name)
     album = Album.objects.get(name=album_name)
-    return render_to_response('photo_detail.html', {'photo': photo, 'album': album, 'request': request})
+    return render_to_response('gallery/photo_detail.html', {'photo': photo, 'album': album, 'request': request})
 
 
 def del_photo(request, photo_name):
