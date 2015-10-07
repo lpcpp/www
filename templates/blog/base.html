@@ -63,28 +63,26 @@
                     <span><a href="/about/">ABOUT</a></span>
             </div>
             <div id="loginForm">
-				<form>
-				    {% csrf_token %}
-					<h2 id="header">登录</h2>
-					<div>
-						<a id="close" href="javascript:;">x</a>
-					</div>
-					<div>
-						<lable for="username">用户名</label>
-						<input type="text" name="username" placeholder="用户名" value="">
-					</div>
-					<div>
-						<label for="password">密码</label>
-						<input type="password" name="password" placeholder="密码">
-					</div>
-					<div>
-						<input type="text" name="verify_code" placeholder="验证码">
-						<img src="/verify_code/">
-					</div>
-					<div>
-						<button id="submit">登陆</button>
-					</div>
-				</form>
+                {% csrf_token %}
+                <h2 id="header">登录</h2>
+                <div>
+                    <a id="close" href="javascript:;">x</a>
+                </div>
+                <div>
+                    <lable for="username">用户名</label>
+                    <input class="bind_enter" type="text" name="username" placeholder="用户名" value="">
+                </div>
+                <div>
+                    <label for="password">密码</label>
+                    <input class="bind_enter" type="password" name="password" placeholder="密码">
+                </div>
+                <div>
+                    <input class="bind_enter" type="text" name="verify_code" placeholder="验证码">
+                    <img src="/verify_code/">
+                </div>
+                <div>
+                    <button id="submit">登陆</button>
+                </div>
             </div>
             <div class="content">
                 <div class="main">
@@ -119,6 +117,14 @@
 			$("#close").click(function(){
 				$("#loginForm").hide();
 			});
+
+            $(".bind_enter").keypress(function(e){
+              if (event.keyCode == 13) {
+                  event.cancelBubble = true;
+                  event.returnValue = false;
+                  $("#submit").click();
+               }
+            })
 
 			$("#submit").click(function(){
     			var username = document.getElementsByName("username")[0].value;
