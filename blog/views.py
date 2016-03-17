@@ -235,4 +235,8 @@ def send_mail_success(request):
 
 
 def test(request):
+    print '8888'
     return render_to_response('blog/test.html')
+
+
+
